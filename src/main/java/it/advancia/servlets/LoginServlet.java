@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginServlet extends HttpServlet {
 
-    UserRepository userRepository = new UserRepository();
+    UserRepository userRepository = UserRepository.getUserRepository();
     PasswordAuthentication auth = new PasswordAuthentication();
 
     /**
