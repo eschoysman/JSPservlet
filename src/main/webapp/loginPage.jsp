@@ -16,6 +16,16 @@
         
         <form action="login" method="POST">
             
+            <div>
+                <% if(request.getParameter("loginerror") != null) {  %>
+                
+                    Wrong username or password
+                <% 
+                    }
+                %>
+                
+            </div>
+                    
             <label> username </label> <input id="username" name="username" type="text" />
             <label> password </label> <input id="password" name="password" type="password" />
 
