@@ -64,19 +64,20 @@ public class UserRepository {
             
             
             
-            if(getUserByUsername(newuser.getUsername()) != null){
+            if(getUserByUsername(newuser.getUsername()) == null){
                 
-                return stat.execute(
+                stat.execute(
                     String.format("Insert INTO \"User\" (\"username\", \"password\", \"birthDate\") Values('%s', '%s', '%s')",
                     newuser.getUsername(), newuser.getPassword(), newuser.getBirthDate()));
-                    
+                   
+                return true;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return false;
+
     }
 
     private Connection getConnection() {

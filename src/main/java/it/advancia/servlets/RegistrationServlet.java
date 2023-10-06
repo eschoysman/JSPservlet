@@ -5,9 +5,11 @@
 package it.advancia.servlets;
 
 import it.advancia.model.User;
+import it.advancia.model.utility.PasswordAuthentication;
 import it.advancia.repository.UserRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 public class RegistrationServlet extends HttpServlet {
 
     private UserRepository userRepository = UserRepository.getUserRepository();
-    
+    private PasswordAuthentication auth = new PasswordAuthentication();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,7 +41,7 @@ public class RegistrationServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegistrationServlet</title>");            
+            out.println("<title>Servlet RegistrationServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet RegistrationServlet at " + request.getContextPath() + "</h1>");
@@ -73,17 +76,35 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        if(request.getParameter("username") != null &&
-                request.getParameter("password") != null &&
-                request.getParameter("birthday") != null){
-        
+
+        if (request.getParameter("username") != null
+                && request.getParameter("password") != null
+                && request.getParameter("birthDate") != null) {
+
             User registeringUser = new User();
             registeringUser.setUsername(request.getParameter("username"));
+            registeringUser.setPassword(auth.hash(request.getParameter("password")));
+            String mydate = request.getParameter("birthDate");
 
+            try {
+                registeringUser.setBirthDate(new SimpleDateFormat("yyyy-MM-dd")
+                        .parse(request.getParameter("birthDate")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (userRepository.saveUser(registeringUser)) {
+
+                response.getWriter()
+                        .println("registered");
+
+            } else {
+                response.sendRedirect("registerPage.jsp?error=alreadyregistered");
+            }
+
+        } else {
+            response.sendRedirect("registerPage.jsp?error");
         }
-        else
-            response.sendRedirect("register.jsp?error");
     }
 
     /**

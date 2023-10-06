@@ -16,13 +16,13 @@
         
         <form action="/register" method="POST">
             <div>
-            <label/> username  <input type="input"/>
+            <label/> username  <input name="username" type="input"/>
             </div>
             <div>
-            <label/> password  <input type="input"/>
+            <label/> password  <input name="password" type="input"/>
             </div>
             <div>
-            <label/> data  <input type="date"/>
+            <label/> data  <input name="birthDate" type="date"/>
             </div>
             
             <input type="submit"/>
