@@ -13,20 +13,20 @@
     </head>
     <body>
         <h1>Registration</h1>
-        
+
         <form action="/register" method="POST">
             <div>
-            <label/> username  <input name="username" type="input"/>
+                <label/> username  <input name="username" type="input"/>
             </div>
             <div>
-            <label/> password  <input name="password" type="input"/>
+                <label/> password  <input name="password" type="input"/>
             </div>
             <div>
-            <label/> data  <input name="birthDate" type="date"/>
+                <label/> data  <input name="birthDate" type="date"/>
             </div>
-            
+
             <input type="submit"/>
         </form>
-        
+
     </body>
 </html>

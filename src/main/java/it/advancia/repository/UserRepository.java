@@ -19,17 +19,18 @@ public class UserRepository {
     private static Connection connection;
     private static UserRepository userRepository = null;
 
-    private UserRepository(){}
-    
-    public static UserRepository getUserRepository(){
-    
-        if(userRepository == null)
+    private UserRepository() {
+    }
+
+    public static UserRepository getUserRepository() {
+
+        if (userRepository == null) {
             userRepository = new UserRepository();
-        
+        }
+
         return userRepository;
     }
-    
-    
+
     public User getUserByUsername(String username) {
 
         try {
@@ -61,15 +62,13 @@ public class UserRepository {
         try {
             Connection conn = getConnection();
             Statement stat = conn.createStatement();
-            
-            
-            
-            if(getUserByUsername(newuser.getUsername()) == null){
-                
+
+            if (getUserByUsername(newuser.getUsername()) == null) {
+
                 stat.execute(
-                    String.format("Insert INTO \"User\" (\"username\", \"password\", \"birthDate\") Values('%s', '%s', '%s')",
-                    newuser.getUsername(), newuser.getPassword(), newuser.getBirthDate()));
-                   
+                        String.format("Insert INTO \"User\" (\"username\", \"password\", \"birthDate\") Values('%s', '%s', '%s')",
+                                newuser.getUsername(), newuser.getPassword(), newuser.getBirthDate()));
+
                 return true;
             }
 
