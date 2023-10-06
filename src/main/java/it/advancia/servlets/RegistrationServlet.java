@@ -4,6 +4,7 @@
  */
 package it.advancia.servlets;
 
+import it.advancia.repository.UserRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RegistrationServlet extends HttpServlet {
 
+    private UserRepository userRepository = UserRepository.getUserRepository();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -69,6 +72,8 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
         processRequest(request, response);
     }
 

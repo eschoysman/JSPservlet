@@ -14,7 +14,7 @@
     <body>
         <h1>Registration</h1>
         
-        <form>
+        <form action="/register" method="POST">
             <div>
             <label/> username  <input type="input"/>
             </div>
@@ -25,7 +25,7 @@
             <label/> data  <input type="date"/>
             </div>
             
-            
+            <input type="submit"/>
         </form>
         
     </body>
