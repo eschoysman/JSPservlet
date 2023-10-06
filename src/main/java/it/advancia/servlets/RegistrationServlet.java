@@ -4,6 +4,7 @@
  */
 package it.advancia.servlets;
 
+import it.advancia.model.User;
 import it.advancia.repository.UserRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -73,8 +74,16 @@ public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        if(request.getParameter("username") != null &&
+                request.getParameter("password") != null &&
+                request.getParameter("birthday") != null){
         
-        processRequest(request, response);
+            User registeringUser = new User();
+            registeringUser.setUsername(request.getParameter("username"));
+
+        }
+        else
+            response.sendRedirect("register.jsp?error");
     }
 
     /**

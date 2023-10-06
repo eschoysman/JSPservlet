@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        response.sendRedirect("loginPage.jsp?loginerror");
+        response.sendRedirect("loginPage.jsp?error");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -17,7 +17,7 @@
         <form action="login" method="POST">
             
             <div>
-                <% if(request.getParameter("loginerror") != null) {  %>
+                <% if(request.getParameter("login") != null) {  %>
                 
                     Wrong username or password
                 <% 
