@@ -2,7 +2,7 @@
 <web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
     <servlet>
         <servlet-name>SimpleServlet</servlet-name>
-        <servlet-class>it.advancia.servlets.SimpleServlet</servlet-class>
+        <servlet-class>it.advancia.servlets.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SimpleServlet</servlet-name>
