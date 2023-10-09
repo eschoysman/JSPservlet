@@ -15,6 +15,26 @@
         <h1>Registration</h1>
 
         <form action="/register" method="POST">
+
+            <div>
+                <%
+                    if (request.getParameter("error") != null) {
+
+                        if (request.getParameter("error").equals("alreadyregistered")){
+                %>
+
+                L'utente e' gia' registrato
+
+                <% } else{  
+                %>
+                    Errore generico
+                    
+                <% }} %>
+                
+
+            </div>
+
+
             <div>
                 <label/> username  <input name="username" type="input"/>
             </div>
