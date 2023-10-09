@@ -20,20 +20,19 @@
                 <%
                     if (request.getParameter("error") != null) {
 
-                        if (request.getParameter("error").equals("alreadyregistered")){
+                        if (request.getParameter("error").equals("alreadyregistered")) {
                 %>
 
                 L'utente e' gia' registrato
 
-                <% } else{  
+                <%      } else {
                 %>
-                    Errore generico
-                    
-                <% }} %>
-                
+                            Errore generico
 
+                <%      }
+                    }
+                %>
             </div>
-
 
             <div>
                 <label/> username  <input name="username" type="input"/>

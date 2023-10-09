@@ -1,0 +1,96 @@
+
+.tavolo, th, td{
+    
+      border-collapse: collapse;
+
+    
+}
+
+.tavolo{
+    width: 90%;
+         border : black solid thin;
+
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+.tavolo tr{
+    
+
+}
+
+.tavolo th, .tavolo td{
+        border : black solid thin;
+        width: auto;
+            padding: 2px;
+
+        background-color: lightcyan;
+}
+
+.tavolo .label{
+            color: darkblue;
+            font-weight: bold;
+            background-color: lightgrey;
+
+}
+
+.tavolo .whitespace{
+    height:20px;
+}
+.whitespace th{
+        background-color: cyan;
+
+    
+}
+
+.tavolo .title{
+    
+    background-color: blueviolet; 
+        color: white;
+    text-align: center;
+}
+
+input[type="date"]{
+    
+    
+    border: none;
+    background-color: inherit;
+    
+}
+
+.navbar-title{
+    text-align: center;
+    height:30px;
+    padding-bottom:2px;
+    margin-bottom: 3px;
+    border-bottom: black solid 1.5px
+}
+.navbar{
+    
+    height: 60px;
+}
+
+
+.navbar-items-bar{
+    
+    height:25px;
+}
+.navbar-items{
+    width:100%;
+    
+}
+.navbar-items, th{
+             
+    border : black solid thin;
+    
+    border-top: darkblue solid 3px;
+    height:100%;
+    border-collapse: collapse;
+    
+}
+.navbar-items th{
+    text-align: left;
+    background-color: lightcyan;
+    color: darkblue;
+    font-weight: bold;
+}
