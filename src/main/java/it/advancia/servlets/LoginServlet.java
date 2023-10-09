@@ -72,7 +72,7 @@ public class LoginServlet extends HttpServlet {
         System.out.println(String.format("\n%s\n", username));
 
         User foundUser = userRepository.getUserByUsername(username);
-        if (auth.authenticate(password, foundUser.getPassword())) {
+        if (foundUser != null && auth.authenticate(password, foundUser.getPassword())) {
             response.getWriter()
                     .println("logged");
         } else {
