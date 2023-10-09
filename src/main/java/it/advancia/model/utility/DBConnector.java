@@ -18,7 +18,7 @@ public class DBConnector {
     
     public static Connection getConnection(){
     
-        if(conn != null){
+        if(conn == null){
             
             try {
 
