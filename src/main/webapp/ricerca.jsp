@@ -26,7 +26,7 @@
 
                 <th class="title" colspan="4">
 
-                    Ricerca Log Operazioni
+                    Ricerca Log Operazioni Particolari
                 </th>
 
             </tr>
