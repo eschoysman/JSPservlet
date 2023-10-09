@@ -17,7 +17,7 @@
         
         <%@include file="header/header.jsp"%>
         
-        <form>
+        <form action="ricerca" method="POST">
         <div style="margin-top:30px">
         <table class="tavolo">
 
@@ -38,13 +38,13 @@
                     idArchivio
                 </td>
                 <td>
-                    <input type="text" />
+                    <input name="idArchivio" type="text" />
                 </td>
                 <td class="label">
                     id Operazione ANSC
                 </td>
                 <td>
-                    <input type="text" />
+                    <input name="idOperazioneANSC" type="text" />
 
                 </td>
             </tr>
@@ -54,13 +54,13 @@
                     id Operazione Comune
                 </td>
                 <td>
-                    <input type="text" />
+                    <input name="idOperazioneComune" type="text" />
                 </td>
                 <td class="label">
                     id Riferimento
                 </td>
                 <td>
-                    <input type="text" />
+                    <input name="idRiferimento" type="text" />
 
                 </td>
             </tr>
@@ -70,7 +70,7 @@
                     Codice operazione ANSC
                 </td>
                 <td colspan="3">
-                    <input type="text" />
+                    <input name="codiceOperazioneANSC" type="text" />
                 </td>
 
 
@@ -82,8 +82,8 @@
                     Cognome Nome
                 </td>
                 <td colspan="3">
-                    <input type="text" />
-                    <input type="text" />
+                    <input name="cognome" type="text" />
+                    <input name="nome" type="text" />
 
 
                 </td>
@@ -107,7 +107,7 @@
                     Note
                 </td>
                 <td>
-                    <input type="text" />
+                    <input name="note" type="text" />
 
                 </td>
             </tr>
@@ -124,7 +124,7 @@
                     id Atto
                 </td>
                 <td>
-                    <input type="text" />
+                    <input name="idAtto" type="text" />
 
                 </td>
             </tr>
@@ -133,14 +133,14 @@
                     Data da
                 </td>
                 <td>
-                    <input type="text" />                    <input type="date" />
+                    <input type="date" name="dataFrom" />
 
                 </td>
                 <td class="label">
                     Data a
                 </td>
                 <td>
-                    <input type="text" />                    <input type="date" />
+                    <input type="date" name="dataTo"/>
 
 
                 </td>
@@ -150,13 +150,13 @@
                     Id Operazione Ann ANSC
                 </td>
                 <td>
-                    <input type="text" />
+                    <input name="idOperazioneAnnANSC" type="text" />
                 </td>
                 <td class="label">
                     id Operazione Ann Comune
                 </td>
                 <td>
-                    <input type="text" />
+                    <input name="idOperazioneAnnComune" type="text" />
 
                 </td>
             </tr>
