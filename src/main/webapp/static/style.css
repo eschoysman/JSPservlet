@@ -94,3 +94,30 @@ input[type="date"]{
     color: darkblue;
     font-weight: bold;
 }
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width:100%;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: lightcyan;
+  z-index: 1;
+  width:100%;
+  text-align: left;
+  margin-top: 2px;
+  border: black solid thin;
+}
+.dropdown-content ul{
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-left:2px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}

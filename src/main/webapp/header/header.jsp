@@ -13,7 +13,18 @@
         <table class="navbar-items">
             
             <tr>
-                <th>jEnte</th>
+                <th>
+                    <div class="dropdown">
+                    jEnte
+                    
+                    <div class="dropdown-content">
+                        <div>Ciao </ul>
+                        
+                        
+                    </div>
+                    
+                    </div>
+                </th>
                 <th>Stato civile</th>
                 <th>Preferiti</th>
                 <th>Inizio</th>
