@@ -19,18 +19,16 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        
-        
+
         <%
-        
+
             List<LogOperazioniANSC> logOperazioniANSCList = (List<LogOperazioniANSC>) request.getAttribute("LogOperazioniANSC");
-            
-            for(LogOperazioniANSC logOperazioniANSC : logOperazioniANSCList ){
+
+            for (LogOperazioniANSC logOperazioniANSC : logOperazioniANSCList) {
                 out.print(String.format("<div>%s: %s</div> Note: <div style=\"margin-left:5px; margin-bottom:10px\">%s</div>", logOperazioniANSC.getIdArchivio(), logOperazioniANSC.getDate(), logOperazioniANSC.getNote()));
             }
         %>
-        
-        
+
         <table class="tavolo">
             <tr><th colspan="4">Elenco Log Operazioni ANSC</th></tr>
             <tr>
@@ -47,19 +45,17 @@
                     note
                 </th> 
             </tr>
-        <c:forEach items="${requestScope.LogOperazioniANSC}" var="op" >
-            <tr>
-            <td>${op.getIdArchivio()}</td>
-            <td>${op.getIdOperazioneANSC()}</td>
-            <td>${op.getDate()}</td>
-            <td>${op.getNote()}</td>
+            <c:forEach items="${requestScope.LogOperazioniANSC}" var="op" >
+                <tr>
+                    <td>${op.getIdArchivio()}</td>
+                    <td>${op.getIdOperazioneANSC()}</td>
+                    <td>${op.getDate()}</td>
+                    <td>${op.getNote()}</td>
+                </tr>
+            </c:forEach>
 
-            
-            </tr>
-        </c:forEach>
-            
         </table>
-        
-        
+
+
     </body>
 </html>

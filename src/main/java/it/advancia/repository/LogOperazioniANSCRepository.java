@@ -24,44 +24,44 @@ public class LogOperazioniANSCRepository {
     private static Connection connection;
     private static LogOperazioniANSCRepository logOperazioniANSCRepository;
     
-    private LogOperazioniANSCRepository(){}
+    private LogOperazioniANSCRepository() {
+    }
     
-    
-    public static LogOperazioniANSCRepository getLogOperazioniANSCRepository(){
-    
-        if(logOperazioniANSCRepository == null) logOperazioniANSCRepository = new LogOperazioniANSCRepository();
-    
+    public static LogOperazioniANSCRepository getLogOperazioniANSCRepository() {
+        
+        if (logOperazioniANSCRepository == null) {
+            logOperazioniANSCRepository = new LogOperazioniANSCRepository();
+        }
         
         return logOperazioniANSCRepository;
     }
     
-    public List<LogOperazioniANSC> executeQueryWhere(String where){
-    
+    public List<LogOperazioniANSC> executeQueryWhere(String where) {
+        
         Connection conn = getConnection();
         List<LogOperazioniANSC> operazioni = new ArrayList<>();
-
+        
         try {
             Statement createStatement = conn.createStatement();
-
-            if(where.isEmpty()) where = "true";
             
-            ResultSet executeQuery = createStatement.executeQuery(String.format( "Select * From \"LogOperazioniANSC\" WHERE %s", where) );
-                        
+            if (where.isEmpty()) {
+                where = "true";
+            }
+            
+            ResultSet executeQuery = createStatement.executeQuery(String.format("Select * From \"LogOperazioniANSC\" WHERE %s", where));
+            
             String debugString = "";
             
-            
-            while(executeQuery.next()){
-            
+            while (executeQuery.next()) {
+                
                 LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
                 
-                
-                logOperazioniANSC.setIdArchivio( executeQuery.getInt("idArchivio"));
+                logOperazioniANSC.setIdArchivio(executeQuery.getInt("idArchivio"));
                 logOperazioniANSC.setDate(executeQuery.getDate("data").toString());
                 logOperazioniANSC.setIdOperazioneANSC(executeQuery.getInt("idOperazioneANSC"));
                 logOperazioniANSC.setNote(executeQuery.getString("note"));
                 operazioni.add(logOperazioniANSC);
             }
-            
             
         } catch (SQLException ex) {
             Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,16 +70,15 @@ public class LogOperazioniANSCRepository {
         return operazioni;
     }
     
-    
-        private Connection getConnection() {
-
+    private Connection getConnection() {
+        
         if (connection == null) {
-
+            
             connection = DBConnector.getConnection();
-
+            
         }
         return connection;
-
+        
     }
     
 }

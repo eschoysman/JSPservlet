@@ -25,8 +25,8 @@ import sun.misc.MessageUtils;
 @WebServlet(name = "SearchServlet", urlPatterns = {"/ricerca"})
 public class SearchServlet extends HttpServlet {
 
-    private LogOperazioniANSCRepository logOperazioniANSCRepository = LogOperazioniANSCRepository.getLogOperazioniANSCRepository(); 
-    
+    private LogOperazioniANSCRepository logOperazioniANSCRepository = LogOperazioniANSCRepository.getLogOperazioniANSCRepository();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,29 +38,21 @@ public class SearchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-        if(request.getAttribute("LogOperazioniANSC")!= null){
-        
-        getServletContext().getRequestDispatcher("/risultatiRicerca.jsp").forward(request, response);
-        
+
+        if (request.getAttribute("LogOperazioniANSC") != null) {
+
+            getServletContext().getRequestDispatcher("/risultatiRicerca.jsp").forward(request, response);
+
         }
-        
-        
-        
-        
-        
-        
+
         response.setContentType("text/html;charset=UTF-8");
-        
-        
-        
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SearchServlet</title>");            
+            out.println("<title>Servlet SearchServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet SearchServlet at " + request.getContextPath() + "</h1>");
@@ -95,44 +87,40 @@ public class SearchServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
+
         Map<String, String[]> parameterMap = request.getParameterMap();
         String dataFrom, dataTo;
-        
+
         StringBuilder builder = new StringBuilder();
-        
-        for(Entry<String,String[]> entry : parameterMap.entrySet() ){
-        
+
+        for (Entry<String, String[]> entry : parameterMap.entrySet()) {
+
             String key = entry.getKey();
             String value = entry.getValue()[0];
-            
-            if(!value.trim().isEmpty()){
-                
-                if(builder.length() != 0){
+
+            if (!value.trim().isEmpty()) {
+
+                if (builder.length() != 0) {
                     builder.append(" AND ");
-                
+
                 }
-                
-                if(key.equals("dataFrom")){
+
+                if (key.equals("dataFrom")) {
                     builder.append(String.format("\"data\" >= '%s'", value));
-                }
-                                
-                else if(key.equals("dataTo")){
+                } else if (key.equals("dataTo")) {
                     builder.append(String.format("\"data\" <= '%s'", value));
-                }
-                else{
-                    
-                    builder.append(String.format("\"%s\"::TEXT like '%s%s%s'", key,"%", value, "%"));
+                } else {
+
+                    builder.append(String.format("\"%s\"::TEXT like '%s%s%s'", key, "%", value, "%"));
                 }
             }
         }
-        
-        
+
         List<LogOperazioniANSC> executeQueryWhere = logOperazioniANSCRepository.executeQueryWhere(builder.toString());
-        
-        if(!executeQueryWhere.isEmpty())
-        request.setAttribute("LogOperazioniANSC", executeQueryWhere);
+
+        if (!executeQueryWhere.isEmpty()) {
+            request.setAttribute("LogOperazioniANSC", executeQueryWhere);
+        }
         processRequest(request, response);
     }
 

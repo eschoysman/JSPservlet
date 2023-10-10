@@ -15,13 +15,13 @@ public class DBConnector {
 
     private static Connection conn;
 
-    private DBConnector(){
+    private DBConnector() {
     }
-    
-    public static Connection getConnection(){
-    
-        if(conn == null){
-            
+
+    public static Connection getConnection() {
+
+        if (conn == null) {
+
             try {
 
                 Class.forName("org.postgresql.Driver");
@@ -29,10 +29,10 @@ public class DBConnector {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        
+
         }
-    
+
         return conn;
-        
+
     }
 }
