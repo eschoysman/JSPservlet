@@ -5,7 +5,7 @@
 package it.advancia.servlets;
 
 import it.advancia.model.User;
-import it.advancia.model.utility.PasswordAuthentication;
+import it.advancia.utility.PasswordAuthentication;
 import it.advancia.repository.UserRepository;
 import java.io.IOException;
 import java.io.PrintWriter;

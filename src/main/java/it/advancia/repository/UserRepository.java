@@ -5,7 +5,7 @@
 package it.advancia.repository;
 
 import it.advancia.model.User;
-import it.advancia.model.utility.DBConnector;
+import it.advancia.utility.DBConnector;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
