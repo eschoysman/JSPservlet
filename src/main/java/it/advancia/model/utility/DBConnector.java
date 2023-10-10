@@ -14,7 +14,9 @@ import java.sql.DriverManager;
 public class DBConnector {
 
     private static Connection conn;
-    
+
+    private DBConnector(){
+    }
     
     public static Connection getConnection(){
     
