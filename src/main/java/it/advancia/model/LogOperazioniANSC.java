@@ -18,6 +18,15 @@ public class LogOperazioniANSC {
     private String idRiferimento;
     private String date;
     private String time;
+    private String note;
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 
     public long getIdArchivio() {
         return idArchivio;

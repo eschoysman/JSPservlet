@@ -22,7 +22,7 @@
             List<LogOperazioniANSC> logOperazioniANSCList = (List<LogOperazioniANSC>) request.getAttribute("LogOperazioniANSC");
             
             for(LogOperazioniANSC logOperazioniANSC : logOperazioniANSCList ){
-                out.print(String.format("%s: %s", logOperazioniANSC.getIdArchivio(), logOperazioniANSC.getDate()));
+                out.print(String.format("<div>%s: %s</div> Note: <div style=\"margin-left:5px; margin-bottom:10px\">%s</div>", logOperazioniANSC.getIdArchivio(), logOperazioniANSC.getDate(), logOperazioniANSC.getNote()));
             }
         %>
         

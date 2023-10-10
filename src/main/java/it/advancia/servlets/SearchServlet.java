@@ -115,11 +115,11 @@ public class SearchServlet extends HttpServlet {
                 }
                 
                 if(key.equals("dataFrom")){
-                    builder.append(String.format("\"date\" >= '%s'", value));
+                    builder.append(String.format("\"data\" >= '%s'", value));
                 }
                                 
                 else if(key.equals("dataTo")){
-                    builder.append(String.format("\"date\" <= '%s'", value));
+                    builder.append(String.format("\"data\" <= '%s'", value));
                 }
                 else{
                     
