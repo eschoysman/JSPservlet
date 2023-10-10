@@ -1,11 +1,15 @@
 
+<div id="container" hidden="false">
+    <div class="backdrop" onclick="document.getElementById('container').hidden =true" >
 
-<div class="backdrop">
 
 
+
+
+</div>
     <div class="modal">
 
-        <form action="inserisci" method="POST">
+        <form action="inserisci" method="POST" enctype="multipart/form-data">
         <table class="tavolo">
 
             <tr>
@@ -28,7 +32,7 @@
 
                         <tr>
                 <th class="label">idAtto</th>
-                <th><input type="file"/></th>
+                <th><input name="file" type="file"/></th>
             </tr>
             
             <tr>
@@ -43,7 +47,4 @@
         </form>
 
     </div>
-
-
 </div>
-
