@@ -4,9 +4,11 @@
  */
 package it.advancia.servlets;
 
+import it.advancia.model.LogOperazioniANSC;
 import it.advancia.repository.LogOperazioniANSCRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.servlet.ServletException;
@@ -36,7 +38,23 @@ public class SearchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
+        if(request.getAttribute("LogOperazioniANSC")!= null){
+        
+        getServletContext().getRequestDispatcher("/risultatiRicerca.jsp").forward(request, response);
+        
+        }
+        
+        
+        
+        
+        
+        
         response.setContentType("text/html;charset=UTF-8");
+        
+        
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -111,9 +129,10 @@ public class SearchServlet extends HttpServlet {
         }
         
         
-        logOperazioniANSCRepository.executeQueryWhere(builder.toString());
+        List<LogOperazioniANSC> executeQueryWhere = logOperazioniANSCRepository.executeQueryWhere(builder.toString());
         
-        
+        if(!executeQueryWhere.isEmpty())
+        request.setAttribute("LogOperazioniANSC", executeQueryWhere);
         processRequest(request, response);
     }
 

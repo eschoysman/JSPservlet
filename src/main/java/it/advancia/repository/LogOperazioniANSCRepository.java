@@ -4,11 +4,14 @@
  */
 package it.advancia.repository;
 
+import it.advancia.model.LogOperazioniANSC;
 import it.advancia.model.utility.DBConnector;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,21 +35,30 @@ public class LogOperazioniANSCRepository {
         return logOperazioniANSCRepository;
     }
     
-    public void executeQueryWhere(String where){
+    public List<LogOperazioniANSC> executeQueryWhere(String where){
     
         Connection conn = getConnection();
-        
+        List<LogOperazioniANSC> operazioni = new ArrayList<>();
+
         try {
             Statement createStatement = conn.createStatement();
+
+            if(where.isEmpty()) where = "true";
             
             ResultSet executeQuery = createStatement.executeQuery(String.format( "Select * From \"LogOperazioniANSC\" WHERE %s", where) );
                         
             String debugString = "";
             
+            
             while(executeQuery.next()){
             
-                debugString = executeQuery.getString("idArchivio");
+                LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
+                
+                
+                logOperazioniANSC.setIdArchivio( executeQuery.getInt("idArchivio"));
+                logOperazioniANSC.setDate(executeQuery.getDate("data").toString());
             
+                operazioni.add(logOperazioniANSC);
             }
             
             
@@ -54,7 +66,7 @@ public class LogOperazioniANSCRepository {
             Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    
+        return operazioni;
     }
     
     
