@@ -13,10 +13,11 @@
         <link rel="stylesheet" type="text/css" href="static/style.css" />
     </head>
     <body>
+                <%@include file="static/modal/modal.jsp"%>
 
         
         <%@include file="header/header.jsp"%>
-        
+
         <form action="ricerca" method="POST">
         <div style="margin-top:30px">
         <table class="tavolo">
@@ -25,7 +26,7 @@
             <tr >
 
                 <th class="title" colspan="4">
-
+                    <div class="plus-icon">+</div>
                     Ricerca Log Operazioni Particolari
                 </th>
 
