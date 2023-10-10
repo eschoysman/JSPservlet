@@ -6,6 +6,11 @@ package it.advancia.repository;
 
 import it.advancia.model.utility.DBConnector;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,7 +24,7 @@ public class LogOperazioniANSCRepository {
     private LogOperazioniANSCRepository(){}
     
     
-    public LogOperazioniANSCRepository getLogOperazioniANSCRepository(){
+    public static LogOperazioniANSCRepository getLogOperazioniANSCRepository(){
     
         if(logOperazioniANSCRepository == null) logOperazioniANSCRepository = new LogOperazioniANSCRepository();
     
@@ -27,10 +32,27 @@ public class LogOperazioniANSCRepository {
         return logOperazioniANSCRepository;
     }
     
-    void executeQueryWhere(String where){
+    public void executeQueryWhere(String where){
     
         Connection conn = getConnection();
         
+        try {
+            Statement createStatement = conn.createStatement();
+            
+            ResultSet executeQuery = createStatement.executeQuery(String.format( "Select * From \"LogOperazioniANSC\" WHERE %s", where) );
+                        
+            String debugString = "";
+            
+            while(executeQuery.next()){
+            
+                debugString = executeQuery.getString("idArchivio");
+            
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     
     }

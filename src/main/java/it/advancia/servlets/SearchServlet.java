@@ -4,6 +4,7 @@
  */
 package it.advancia.servlets;
 
+import it.advancia.repository.LogOperazioniANSCRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sun.misc.MessageUtils;
 
 /**
  *
@@ -21,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SearchServlet", urlPatterns = {"/ricerca"})
 public class SearchServlet extends HttpServlet {
 
+    private LogOperazioniANSCRepository logOperazioniANSCRepository = LogOperazioniANSCRepository.getLogOperazioniANSCRepository(); 
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -99,11 +103,15 @@ public class SearchServlet extends HttpServlet {
                 else if(key.equals("dataTo")){
                     builder.append(String.format("\"date\" <= '%s'", value));
                 }
-                else
-                    builder.append(String.format("'%s' like '%s%s%s'", key,"%", value, "%"));
-                
+                else{
+                    
+                    builder.append(String.format("\"%s\"::TEXT like '%s%s%s'", key,"%", value, "%"));
+                }
             }
         }
+        
+        
+        logOperazioniANSCRepository.executeQueryWhere(builder.toString());
         
         
         processRequest(request, response);
