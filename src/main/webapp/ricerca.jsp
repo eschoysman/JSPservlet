@@ -26,7 +26,7 @@
             <tr >
 
                 <th class="title" colspan="4">
-                    <div class="plus-icon">+</div>
+                    <div class="plus-icon" onclick="document.getElementById('container').hidden = false">+</div>
                     Ricerca Log Operazioni Particolari
                 </th>
 
