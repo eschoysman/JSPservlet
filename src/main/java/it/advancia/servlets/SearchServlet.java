@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.StringJoiner;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -100,39 +101,33 @@ public class SearchServlet extends HttpServlet {
         
         Map<String, String[]> parameterMap = request.getParameterMap();
         
-        StringBuilder builder = new StringBuilder();
+        StringJoiner where = new StringJoiner(" AND ").setEmptyValue("true");
         
-        for(Entry<String,String[]> entry : parameterMap.entrySet() ){
-        
+        for(Entry<String,String[]> entry : parameterMap.entrySet()) {
+            
             String key = entry.getKey();
             String value = entry.getValue()[0];
 
             if(!value.trim().isEmpty()){
-                
-                if(builder.length() != 0){
-                    builder.append(" AND ");
-                
-                }
-                
-                switch (key) {
+                switch(key) {
                     case "dataFrom":
-                        builder.append(String.format("\"data\" >= '%s'", value));
+                        where.add(String.format("\"data\" >= '%s'", value));
                         break;
                     case "dataTo":
-                        builder.append(String.format("\"data\" <= '%s'", value));
+                        where.add(String.format("\"data\" <= '%s'", value));
                         break;
                     default:
-                        builder.append(String.format("\"%s\"::TEXT like '%s%s%s'", key,"%", value, "%"));
+                        where.add(String.format("\"%s\"::TEXT like '%%%s%%'", key, value));
                         break;
                 }
             }
         }
         
+        List<LogOperazioniANSC> executeQueryWhere = logOperazioniANSCRepository.executeQueryWhere(where.toString());
         
-        List<LogOperazioniANSC> executeQueryWhere = logOperazioniANSCRepository.executeQueryWhere(builder.toString());
-        
-        if(!executeQueryWhere.isEmpty())
+        if(!executeQueryWhere.isEmpty()) {
             request.setAttribute("LogOperazioniANSC", executeQueryWhere);
+        }
         processRequest(request, response);
     }
 
