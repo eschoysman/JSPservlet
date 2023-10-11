@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -94,9 +97,21 @@ public class InsertLogServlet extends HttpServlet {
 
         Part part = request.getPart("file");
         System.out.println(part);
+        request.getParameterMap().forEach((k,v)->System.out.println(k+" : "+Arrays.toString(v)));
+        String note = request.getParameter("note");
+        
+        LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
+        logOperazioniANSC.setNote(note);
+        if(!part.getSubmittedFileName().trim().isEmpty()) {
+            logOperazioniANSC.setFileName(part.getSubmittedFileName());
+            logOperazioniANSC.setFileStream(part.getInputStream());
+        }
 
-        logOperazioniANSCRepository.saveBlobFromInputStream(part.getInputStream(), part.getSubmittedFileName());
-
+        int idArchivio = logOperazioniANSCRepository.save(logOperazioniANSC);
+        System.out.println("idArchivio generato: "+idArchivio);
+        request.setAttribute("idArchivio", idArchivio);
+        getServletContext().getRequestDispatcher("/ricerca").forward(request,response);
+        
         //processRequest(request, response);
     }
 
