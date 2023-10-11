@@ -6,6 +6,8 @@ package it.advancia.utility;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import javax.sql.DataSource;
+import javax.naming.InitialContext;
 
 /**
  *
@@ -15,23 +17,23 @@ public class DBConnector {
 
     private static Connection conn;
 
-    private DBConnector() {
-    }
+    private DBConnector() {}
 
     public static Connection getConnection() {
 
         if (conn == null) {
-
             try {
 
-                Class.forName("org.postgresql.Driver");
-                conn = DriverManager.getConnection("jdbc:postgresql://localhost/Jspservlet", "postgres", "password");
+                InitialContext ctx = new InitialContext();
+                DataSource ds = (DataSource) ctx.lookup("java:/comp/env/jdbc/MyLocalDB");
+
+                conn = ds.getConnection();
+                System.out.println("\ndb connection successful\n");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
-
         return conn;
 
     }
