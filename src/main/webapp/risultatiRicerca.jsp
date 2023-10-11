@@ -34,7 +34,10 @@
                 </th> 
                 <th>
                     note
-                </th> 
+                </th>
+                <th>
+                    
+                </th>
             </tr>
             <c:forEach items="${requestScope.LogOperazioniANSC}" var="op" >
                 <tr>
@@ -42,6 +45,7 @@
                     <td>${op.getIdOperazioneANSC()}</td>
                     <td>${op.getDate()}</td>
                     <td>${op.getNote()}</td>
+                    <td><c:if test="${op.getFileName() != null && !op.getFileName().trim().isEmpty()}"><a href="/inserisci?idArchivio=${op.getIdArchivio()}" download>${op.getFileName()}</a></c:if></td>
                 </tr>
             </c:forEach>
 

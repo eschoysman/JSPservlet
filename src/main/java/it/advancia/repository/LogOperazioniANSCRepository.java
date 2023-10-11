@@ -71,6 +71,9 @@ public class LogOperazioniANSCRepository {
         logOperazioniANSC.setDate(executeQuery.getDate("data") == null ? null : executeQuery.getDate("data").toString());
         logOperazioniANSC.setIdOperazioneANSC(executeQuery.getInt("idOperazioneANSC"));
         logOperazioniANSC.setNote(executeQuery.getString("note"));
+        logOperazioniANSC.setFileName(executeQuery.getString("fileName"));
+        
+        System.out.println("\n"+logOperazioniANSC.getFileName()+"\n");
         
         return logOperazioniANSC;
     }
