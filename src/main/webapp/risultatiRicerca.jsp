@@ -21,7 +21,7 @@
         <%@include file="header/header.jsp"%>
         <br>
         <table class="tavolo">
-            <tr><th colspan="4">Elenco Log Operazioni ANSC</th></tr>
+            <tr><th colspan="5">Elenco Log Operazioni ANSC</th></tr>
             <tr>
                 <th>
                     idArchivio
@@ -36,7 +36,7 @@
                     note
                 </th>
                 <th>
-                    
+                    Download
                 </th>
             </tr>
             <c:forEach items="${requestScope.LogOperazioniANSC}" var="op" >
@@ -45,7 +45,7 @@
                     <td>${op.getIdOperazioneANSC()}</td>
                     <td>${op.getDate()}</td>
                     <td>${op.getNote()}</td>
-                    <td><c:if test="${op.getFileName() != null && !op.getFileName().trim().isEmpty()}"><a href="/inserisci?idArchivio=${op.getIdArchivio()}" download>${op.getFileName()}</a></c:if></td>
+                    <td><c:if test="${op.getFileName() != null && !op.getFileName().trim().isEmpty()}"><a href="/inserisci?id=${op.getIdArchivio()}" download>${op.getFileName()}</a></c:if></td>
                 </tr>
             </c:forEach>
 
