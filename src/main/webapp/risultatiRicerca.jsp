@@ -19,16 +19,7 @@
     </head>
     <body>
         <%@include file="header/header.jsp"%>
-
-        <%
-
-            List<LogOperazioniANSC> logOperazioniANSCList = (List<LogOperazioniANSC>) request.getAttribute("LogOperazioniANSC");
-
-            for (LogOperazioniANSC logOperazioniANSC : logOperazioniANSCList) {
-                out.print(String.format("<div>%s: %s</div> Note: <div style=\"margin-left:5px; margin-bottom:10px\">%s</div>", logOperazioniANSC.getIdArchivio(), logOperazioniANSC.getDate(), logOperazioniANSC.getNote()));
-            }
-        %>
-
+        <br>
         <table class="tavolo">
             <tr><th colspan="4">Elenco Log Operazioni ANSC</th></tr>
             <tr>
