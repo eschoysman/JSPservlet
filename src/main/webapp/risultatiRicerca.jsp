@@ -52,5 +52,7 @@
         </table>
 
 
+        <div><a href="/ricerca.jsp">indietro</a></div>
+        
     </body>
 </html>
