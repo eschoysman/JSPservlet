@@ -81,6 +81,7 @@ public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                
         processRequest(request, response);
     }
 
@@ -114,16 +115,16 @@ public class SearchServlet extends HttpServlet {
                 
                 }
                 
-                if(key.equals("dataFrom")){
-                    builder.append(String.format("\"data\" >= '%s'", value));
-                }
-                                
-                else if(key.equals("dataTo")){
-                    builder.append(String.format("\"data\" <= '%s'", value));
-                }
-                else{
-                    
-                    builder.append(String.format("\"%s\"::TEXT like '%s%s%s'", key,"%", value, "%"));
+                switch (key) {
+                    case "dataFrom":
+                        builder.append(String.format("\"data\" >= '%s'", value));
+                        break;
+                    case "dataTo":
+                        builder.append(String.format("\"data\" <= '%s'", value));
+                        break;
+                    default:
+                        builder.append(String.format("\"%s\"::TEXT like '%s%s%s'", key,"%", value, "%"));
+                        break;
                 }
             }
         }
