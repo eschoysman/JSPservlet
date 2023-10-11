@@ -50,22 +50,10 @@ public class LogOperazioniANSCRepository {
         try {
             Statement createStatement = conn.createStatement();
             
-            if (where.isEmpty()) {
-                where = "true";
-            }
-            
             ResultSet executeQuery = createStatement.executeQuery(String.format("Select * From \"LogOperazioniANSC\" WHERE %s", where));
             
-            String debugString = "";
-            
-            while (executeQuery.next()) {
-                
-                LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
-                
-                logOperazioniANSC.setIdArchivio(executeQuery.getInt("idArchivio"));
-                logOperazioniANSC.setDate(executeQuery.getDate("data") == null ? null : executeQuery.getDate("data").toString());
-                logOperazioniANSC.setIdOperazioneANSC(executeQuery.getInt("idOperazioneANSC"));
-                logOperazioniANSC.setNote(executeQuery.getString("note"));
+            while(executeQuery.next()) {
+                LogOperazioniANSC logOperazioniANSC = convertToLogOperazioniANSC(executeQuery);                
                 operazioni.add(logOperazioniANSC);
             }
             
@@ -74,6 +62,35 @@ public class LogOperazioniANSCRepository {
         }
         
         return operazioni;
+    }
+    
+    private LogOperazioniANSC convertToLogOperazioniANSC(ResultSet executeQuery) throws SQLException {
+        LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
+
+        logOperazioniANSC.setIdArchivio(executeQuery.getInt("idArchivio"));
+        logOperazioniANSC.setDate(executeQuery.getDate("data") == null ? null : executeQuery.getDate("data").toString());
+        logOperazioniANSC.setIdOperazioneANSC(executeQuery.getInt("idOperazioneANSC"));
+        logOperazioniANSC.setNote(executeQuery.getString("note"));
+        
+        return logOperazioniANSC;
+    }
+    
+    public int save(LogOperazioniANSC newLogOperazioniANSC) {
+        Connection conn = getConnection();
+        try {
+            PreparedStatement prepareStatement = conn.prepareStatement("Insert into \"LogOperazioniANSC\"(\"note\", \"attachment\", \"fileName\") VALUES(?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
+            prepareStatement.setString(1,newLogOperazioniANSC.getNote());
+            prepareStatement.setBinaryStream(2, newLogOperazioniANSC.getFileStream());
+            prepareStatement.setString(3, newLogOperazioniANSC.getFileName());
+            prepareStatement.execute();
+            ResultSet result = prepareStatement.getGeneratedKeys();
+            if(result.next()) {
+                return result.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
     }
     public void saveBlobFromInputStream(InputStream in, String name){
     

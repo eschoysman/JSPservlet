@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.StringJoiner;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -99,15 +100,15 @@ public class SearchServlet extends HttpServlet {
         
         
         Map<String, String[]> parameterMap = request.getParameterMap();
-        String dataFrom, dataTo;
         
-        StringBuilder builder = new StringBuilder();
+//        StringBuilder builder = new StringBuilder();
+        StringJoiner where = new StringJoiner(" AND ").setEmptyValue("true");
         
         for(Entry<String,String[]> entry : parameterMap.entrySet() ){
         
             String key = entry.getKey();
             String value = entry.getValue()[0];
-            
+
             if(!value.trim().isEmpty()){
                 
                 if(builder.length() != 0){
@@ -129,11 +130,11 @@ public class SearchServlet extends HttpServlet {
             }
         }
         
+        List<LogOperazioniANSC> executeQueryWhere = logOperazioniANSCRepository.executeQueryWhere(where.toString());
         
-        List<LogOperazioniANSC> executeQueryWhere = logOperazioniANSCRepository.executeQueryWhere(builder.toString());
-        
-        if(!executeQueryWhere.isEmpty())
-        request.setAttribute("LogOperazioniANSC", executeQueryWhere);
+        if(!executeQueryWhere.isEmpty()) {
+            request.setAttribute("LogOperazioniANSC", executeQueryWhere);
+        }
         processRequest(request, response);
     }
 
