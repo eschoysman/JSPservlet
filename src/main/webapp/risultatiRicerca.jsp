@@ -44,7 +44,7 @@
                     <td>${op.getIdOperazioneANSC()}</td>
                     <td>${op.getDate()}</td>
                     <td>${op.getNote()}</td>
-                    <td><c:if test="${op.getFileName() != null && !op.getFileName().trim().isEmpty()}"><a href="/inserisci?id=${op.getIdArchivio()}" download>${op.getFileName()}</a></c:if></td>
+                    <td><c:if test="${op.getFileName() != null && !op.getFileName().trim().isEmpty()}"><a href="/inserisci?id=${op.getIdArchivio()}">${op.getFileName()}</a></c:if></td>
                 </tr>
             </c:forEach>
 

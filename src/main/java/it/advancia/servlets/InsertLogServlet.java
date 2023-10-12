@@ -78,7 +78,7 @@ public class InsertLogServlet extends HttpServlet {
         while (blob.available() > 0) {
             outputStream.write(blob.read());
         }
-        response.setContentType("application/octet-stream");
+        response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", String.format("inline; filename=\"%s\"", fileName));
 
     }
