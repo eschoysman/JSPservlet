@@ -44,14 +44,10 @@
                     <td>${op.getIdOperazioneANSC()}</td>
                     <td>${op.getData()}</td>
                     <td>${op.getNote()}</td>
-                    <td><c:if test="${op.getFileName() != null && !op.getFileName().trim().isEmpty()}"><a href="/inserisci?id=${op.getIdArchivio()}">${op.getFileName()}</a></c:if></td>
+                    <td><c:if test="${op.getFileName() != null && !op.getFileName().trim().isEmpty()}"><a href="/inserisci?id=${op.getIdArchivio()}" target="_blank">${op.getFileName()}</a></c:if></td>
                 </tr>
             </c:forEach>
-
         </table>
-
-
         <div><a href="/ricerca.jsp">indietro</a></div>
-        
     </body>
 </html>
