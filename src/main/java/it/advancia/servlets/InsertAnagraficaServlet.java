@@ -78,8 +78,7 @@ public class InsertAnagraficaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
+
         Map<String, String> collect = request.getParameterMap().entrySet().stream()
                 .collect(Collectors.toMap(entry -> entry.getKey() , entry ->entry.getValue()[0]));
         
