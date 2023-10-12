@@ -18,7 +18,7 @@
                         idOperazioneANSC
                     </td>
                     <td>
-                        <input name="idOperazioneANSC" type="text" />
+                        <input name="idOperazioneANSC" type="number" />
                     </td>
                 </tr>
                 <tr>
@@ -26,13 +26,13 @@
                         idOperazioneComune
                     </td>
                     <td>
-                        <input name="idOperazioneComune" type="text" />
+                        <input name="idOperazioneComune" type="number" />
                     </td>
                     <td class="label">
                         idRiferimento
                     </td>
                     <td>
-                        <input name="idRiferimento" type="text" />
+                        <input name="idRiferimento" type="number" />
                     </td>
                 </tr>
                 <tr>
@@ -90,7 +90,7 @@
                         idAtto
                     </td>
                     <td>
-                        <input name="idAtto" type="text" />
+                        <input name="idAtto" type="number" />
                     </td>
                 </tr>
                 <tr>
@@ -98,13 +98,13 @@
                         Id Operazione Ann ANSC
                     </td>
                     <td>
-                        <input name="idOperazioneAnnANSC" type="text" />
+                        <input name="idOperazioneAnnANSC" type="number" />
                     </td>
                     <td class="label">
                         id Operazione Ann Comune
                     </td>
                     <td>
-                        <input name="idOperazioneAnnComune" type="text" />
+                        <input name="idOperazioneAnnComune" type="number" />
                     </td>
                 </tr>
             </table>

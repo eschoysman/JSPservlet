@@ -4,26 +4,39 @@
  */
 package it.advancia.servlets;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfName;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.StandardDecryption;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import it.advancia.model.LogOperazioniANSC;
 import it.advancia.repository.LogOperazioniANSCRepository;
+import java.awt.Adjustable;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Arrays;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
+import java.util.stream.Stream;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 /**
  *
@@ -75,14 +88,14 @@ public class InsertLogServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        LogOperazioniANSC loansc = logOperazioniANSCRepository.getBlob( Long.parseLong(request.getParameter("id")));
+        LogOperazioniANSC logOperazioniANSC = logOperazioniANSCRepository.getBlob( Long.parseLong(request.getParameter("id")));
 
-        InputStream blob = loansc.getAttachment();
-        String fileName = loansc.getFileName();
+        InputStream blob = logOperazioniANSC.getAttachment();
+        String fileName = logOperazioniANSC.getFileName();
 
         OutputStream outputStream = response.getOutputStream();
 
-        while (blob.available() > 0) {
+        while(blob.available()>0) {
             outputStream.write(blob.read());
         }
         response.setContentType("application/octet-stream");
@@ -108,37 +121,117 @@ public class InsertLogServlet extends HttpServlet {
             request.getParameterMap().forEach((k,v)->System.out.println(k+" : "+Arrays.toString(v)));
 
             LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
-            logOperazioniANSC.setIdOperazioneANSC(Long.parseLong(request.getParameter("idOperazioneANSC")));
-            logOperazioniANSC.setIdOperazioneComune(Long.parseLong(request.getParameter("idOperazioneComune")));
-            logOperazioniANSC.setIdRiferimento(request.getParameter("idRiferimento"));
-            logOperazioniANSC.setCodiceOperazioneANSC(request.getParameter("codiceOperazioneANSC"));
-            logOperazioniANSC.setNome(request.getParameter("nome"));
-            logOperazioniANSC.setCognome(request.getParameter("cognome"));
-            logOperazioniANSC.setEseguita(request.getParameter("eseguita"));
-            logOperazioniANSC.setNote(request.getParameter("note"));
-            logOperazioniANSC.setOperatore(request.getParameter("operatore"));
-            logOperazioniANSC.setData(DATE_FORMAT.parse(request.getParameter("data")));
-            logOperazioniANSC.setIdAtto(Long.parseLong(request.getParameter("idAtto")));
-            logOperazioniANSC.setIdOperazioneAnnANSC(Long.parseLong(request.getParameter("idOperazioneAnnANSC")));
-            logOperazioniANSC.setIdOperazioneAnnComune(Long.parseLong(request.getParameter("idOperazioneAnnComune")));
-            logOperazioniANSC.setFileName("attachment_"+Instant.now().getEpochSecond()+".pdf");
-            // TODO $$$ auto creazione del pdf tramite iText
-            createPDF(logOperazioniANSC);
-            logOperazioniANSC.setAttachment(null);
+            if(!request.getParameter("idOperazioneANSC").trim().isEmpty()) {
+                logOperazioniANSC.setIdOperazioneANSC(Long.parseLong(request.getParameter("idOperazioneANSC")));
+            }
+            if(!request.getParameter("idOperazioneComune").trim().isEmpty()) {
+                logOperazioniANSC.setIdOperazioneComune(Long.parseLong(request.getParameter("idOperazioneComune")));
+            }
+            if(!request.getParameter("idRiferimento").trim().isEmpty()) {
+                logOperazioniANSC.setIdRiferimento(request.getParameter("idRiferimento"));
+            }
+            if(!request.getParameter("codiceOperazioneANSC").trim().isEmpty()) {
+                logOperazioniANSC.setCodiceOperazioneANSC(request.getParameter("codiceOperazioneANSC"));
+            }
+            if(!request.getParameter("nome").trim().isEmpty()) {
+                logOperazioniANSC.setNome(request.getParameter("nome"));
+            }
+            if(!request.getParameter("cognome").trim().isEmpty()) {
+                logOperazioniANSC.setCognome(request.getParameter("cognome"));
+            }
+            if(!request.getParameter("eseguita").trim().isEmpty()) {
+                logOperazioniANSC.setEseguita(request.getParameter("eseguita"));
+            }
+            if(!request.getParameter("note").trim().isEmpty()) {
+                logOperazioniANSC.setNote(request.getParameter("note"));
+            }
+            if(!request.getParameter("operatore").trim().isEmpty()) {
+                logOperazioniANSC.setOperatore(request.getParameter("operatore"));
+            }
+            if(!request.getParameter("data").trim().isEmpty()) {
+                logOperazioniANSC.setData(DATE_FORMAT.parse(request.getParameter("data")));
+            }
+            if(!request.getParameter("idAtto").trim().isEmpty()) {
+                logOperazioniANSC.setIdAtto(Long.parseLong(request.getParameter("idAtto")));
+            }
+            if(!request.getParameter("idOperazioneAnnANSC").trim().isEmpty()) {
+                logOperazioniANSC.setIdOperazioneAnnANSC(Long.parseLong(request.getParameter("idOperazioneAnnANSC")));
+            }
+            if(!request.getParameter("idOperazioneAnnComune").trim().isEmpty()) {
+                logOperazioniANSC.setIdOperazioneAnnComune(Long.parseLong(request.getParameter("idOperazioneAnnComune")));
+            }
 
-            int idArchivio = logOperazioniANSCRepository.save(logOperazioniANSC);
-            System.out.println("idArchivio generato: "+idArchivio);
-            request.setAttribute("idArchivio", idArchivio);
+            logOperazioniANSCRepository.save(logOperazioniANSC);
+            // creazione del PDF CON il idArchivio
+            createAndSetPDF(logOperazioniANSC);
+            logOperazioniANSCRepository.saveAttachment(logOperazioniANSC);
+            
+            request.setAttribute("idArchivio", logOperazioniANSC.getIdArchivio());
             getServletContext().getRequestDispatcher("/ricerca").forward(request,response);
-
             //processRequest(request, response);
-        } catch(ParseException e) {
+        } catch(ParseException | DocumentException e) {
             throw new ServletException(e);
         }
     }
 
-    private void createPDF(LogOperazioniANSC logOperazioniANSC) {
+    private void createAndSetPDF(LogOperazioniANSC logOperazioniANSC) throws IOException, DocumentException {
+        String fileName = "attachment_"+Instant.now().getEpochSecond()+".pdf";
+        System.out.println("START - Creazione PDF con fileName \""+fileName+"\"");
+        logOperazioniANSC.setFileName(fileName);
+        InputStream inputStream = createPDF(logOperazioniANSC);
+        logOperazioniANSC.setAttachment(inputStream);
+        System.out.println("END - Creazione PDF");
+    }
+    
+    private InputStream createPDF(LogOperazioniANSC logOperazioniANSC) throws IOException, DocumentException {
+        Document document = new Document();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter.getInstance(document, baos);
+
+        document.open();
+//        Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+//        Chunk title = new Chunk("Riepilogo Log Operazioni ANSC", font);
+//        document.add(title);
+
+        PdfPTable table = new PdfPTable(2);
         
+        setHeaders(table,"Campo", "Valore");
+        
+        addRow(table, "ID Archivio", logOperazioniANSC.getIdArchivio());
+        addRow(table, "ID Operazione ANSC", logOperazioniANSC.getIdOperazioneANSC());
+        addRow(table, "ID Operazione Comune", logOperazioniANSC.getIdOperazioneComune());
+        addRow(table, "ID Riferimento", logOperazioniANSC.getIdRiferimento());
+        addRow(table, "Codice Operazione ANSC", logOperazioniANSC.getCodiceOperazioneANSC());
+        addRow(table, "Nome", logOperazioniANSC.getNome());
+        addRow(table, "Cognome", logOperazioniANSC.getCognome());
+        addRow(table, "Eseguita", logOperazioniANSC.getEseguita());
+        addRow(table, "Note", logOperazioniANSC.getNote());
+        addRow(table, "Operatore", logOperazioniANSC.getOperatore());
+        addRow(table, "Data", logOperazioniANSC.getData()!=null ? DATE_FORMAT.format(logOperazioniANSC.getData()) : null);
+        addRow(table, "ID Atto", logOperazioniANSC.getIdAtto());
+        addRow(table, "ID Operazione Ann ANSC", logOperazioniANSC.getIdOperazioneAnnANSC());
+        addRow(table, "ID Operazione Ann Comune", logOperazioniANSC.getIdOperazioneAnnComune());
+
+        document.add(table);
+        document.close();
+        
+        InputStream inputStream = new ByteArrayInputStream(baos.toByteArray());
+        return inputStream;
+    }
+    
+    private void setHeaders(PdfPTable table, String... headers) {
+        Arrays.stream(headers)
+                .forEach(columnTitle -> {
+                  PdfPCell header = new PdfPCell();
+                  header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                  header.setBorderWidth(2);
+                  header.setPhrase(new Phrase(columnTitle));
+                  table.addCell(header);
+              });
+    }
+    private void addRow(PdfPTable table, String campo, Object value) {
+        table.addCell(campo);
+        table.addCell(value==null ? "" : value.toString());
     }
     
     /**

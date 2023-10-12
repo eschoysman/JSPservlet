@@ -90,7 +90,7 @@ public class LogOperazioniANSCRepository {
         return logOperazioniANSC;
     }
     
-    public int save(LogOperazioniANSC newLogOperazioniANSC) {        
+    public void save(LogOperazioniANSC newLogOperazioniANSC) {        
         Connection conn = getConnection();
         try {
             String insertQuery = "Insert into \"LogOperazioniANSC\"(\"idOperazioneANSC\",\"idOperazioneComune\",\"idRiferimento\",\"codiceOperazioneANSC\",\"operatore\",\"data\",\"eseguita\",\"idAtto\",\"note\",\"idOperazioneAnnANSC\",\"idOperazioneAnnComune\",\"nome\",\"cognome\",\"attachment\",\"fileName\") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -101,7 +101,7 @@ public class LogOperazioniANSCRepository {
             prepareStatement.setString(3,	newLogOperazioniANSC.getIdRiferimento());
             prepareStatement.setString(4,	newLogOperazioniANSC.getCodiceOperazioneANSC());
             prepareStatement.setString(5,	newLogOperazioniANSC.getOperatore());
-            prepareStatement.setDate(6,	new Date(newLogOperazioniANSC.getData().getTime()));
+            prepareStatement.setDate(6,	newLogOperazioniANSC.getData()!=null ? new Date(newLogOperazioniANSC.getData().getTime()) : null);
             prepareStatement.setString(7,	newLogOperazioniANSC.getEseguita());
             prepareStatement.setLong(8,	newLogOperazioniANSC.getIdAtto());
             prepareStatement.setString(9,	newLogOperazioniANSC.getNote());
@@ -116,12 +116,27 @@ public class LogOperazioniANSCRepository {
             // recupero la chiave dell'oggetto dopo il suo inseritìmento in tabella
             ResultSet result = prepareStatement.getGeneratedKeys();
             if(result.next()) {
-                return result.getInt("idArchivio");
+                int idArchivio = result.getInt("idArchivio");
+                System.out.println("idArchivio generato: "+idArchivio);
+                newLogOperazioniANSC.setIdArchivio(idArchivio);
             }
         } catch (SQLException ex) {
             Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return -1;
+    }
+    
+    public void saveAttachment(LogOperazioniANSC logOperazioniANSC) {
+        Connection conn = getConnection();
+        
+        try {
+            PreparedStatement prepareStatement = conn.prepareStatement("UPDATE \"LogOperazioniANSC\" SET \"attachment\"=?, \"fileName\"=? WHERE \"idArchivio\"=?");
+            prepareStatement.setBinaryStream(1, logOperazioniANSC.getAttachment());
+            prepareStatement.setString(2, logOperazioniANSC.getFileName());
+            prepareStatement.setLong(3, logOperazioniANSC.getIdArchivio());
+            prepareStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public LogOperazioniANSC getBlob(long idArchivio){
