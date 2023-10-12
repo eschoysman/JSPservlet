@@ -4,7 +4,6 @@
     Author     : Lavoro
 --%>
 
-<%@page import="java.util.List"%>
 <%@page import="it.advancia.model.LogOperazioniANSC"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 

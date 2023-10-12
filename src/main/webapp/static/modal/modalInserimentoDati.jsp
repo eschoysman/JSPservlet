@@ -1,7 +1,6 @@
 
-<div id="container" hidden="false">
-    <div class="backdrop" onclick="document.getElementById('container').hidden = true" >
-    </div>
+<div id="modalInserimentoDati" hidden="false">
+    <div class="backdrop" onclick="document.getElementById('modalInserimentoDati').hidden = true"></div>
     <div class="modal">
         <form action="inserisci" method="POST" enctype="multipart/form-data">
             <table class="tavolo">
@@ -10,7 +9,7 @@
                 </tr>
                 <tr>
                     <th class="label">
-                        idArchivio        
+                        idArchivio
                     </th>
                     <td>
                         <input type="text" disabled/>
