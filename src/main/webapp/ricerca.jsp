@@ -14,6 +14,7 @@
     </head>
     <body>
         <%@include file="static/modal/modalInserimentoDati.jsp"%>
+        <%@include file="static/modal/modalInserimentoAnagrafico.jsp"%>
         <%@include file="header/header.jsp"%>
 
         <div style="margin-top:30px">

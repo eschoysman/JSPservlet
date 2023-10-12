@@ -12,6 +12,14 @@
         <servlet-name>InsertLogServlet</servlet-name>
         <servlet-class>it.advancia.servlets.InsertLogServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InsertAnagraficaServlet</servlet-name>
+        <servlet-class>it.advancia.servlets.InsertAnagraficaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IdRiferimentoServlet</servlet-name>
+        <servlet-class>it.advancia.servlets.IdRiferimentoServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SimpleServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -23,6 +31,14 @@
     <servlet-mapping>
         <servlet-name>InsertLogServlet</servlet-name>
         <url-pattern>/inserisci</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertAnagraficaServlet</servlet-name>
+        <url-pattern>/inserisciAnagrafica</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IdRiferimentoServlet</servlet-name>
+        <url-pattern>/idriferimenti</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
