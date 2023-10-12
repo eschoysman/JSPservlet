@@ -11,12 +11,15 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jdk.jfr.events.FileWriteEvent;
@@ -68,78 +71,78 @@ public class LogOperazioniANSCRepository {
         LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
 
         logOperazioniANSC.setIdArchivio(executeQuery.getInt("idArchivio"));
-        logOperazioniANSC.setDate(executeQuery.getDate("data") == null ? null : executeQuery.getDate("data").toString());
         logOperazioniANSC.setIdOperazioneANSC(executeQuery.getInt("idOperazioneANSC"));
+        logOperazioniANSC.setIdOperazioneComune(executeQuery.getInt("idOperazioneComune"));
+        logOperazioniANSC.setIdRiferimento(executeQuery.getString("idRiferimento"));
+        logOperazioniANSC.setCodiceOperazioneANSC(executeQuery.getString("codiceOperazioneANSC"));
+        logOperazioniANSC.setNome(executeQuery.getString("nome"));
+        logOperazioniANSC.setCognome(executeQuery.getString("cognome"));
+        logOperazioniANSC.setEseguita(executeQuery.getString("eseguita"));
         logOperazioniANSC.setNote(executeQuery.getString("note"));
+        logOperazioniANSC.setOperatore(executeQuery.getString("operatore"));
+        logOperazioniANSC.setData(executeQuery.getDate("data"));
+        logOperazioniANSC.setIdAtto(executeQuery.getLong("idAtto"));
+        logOperazioniANSC.setIdOperazioneAnnANSC(executeQuery.getInt("idOperazioneAnnANSC"));
+        logOperazioniANSC.setIdOperazioneAnnComune(executeQuery.getInt("idOperazioneAnnComune"));
         logOperazioniANSC.setFileName(executeQuery.getString("fileName"));
-        
-        System.out.println("\n"+logOperazioniANSC.getFileName()+"\n");
+        logOperazioniANSC.setAttachment(executeQuery.getBinaryStream("attachment"));
         
         return logOperazioniANSC;
     }
     
-    public int save(LogOperazioniANSC newLogOperazioniANSC) {
+    public int save(LogOperazioniANSC newLogOperazioniANSC) {        
         Connection conn = getConnection();
         try {
-            PreparedStatement prepareStatement = conn.prepareStatement("Insert into \"LogOperazioniANSC\"(\"note\", \"attachment\", \"fileName\") VALUES(?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
-            prepareStatement.setString(1,newLogOperazioniANSC.getNote());
-            prepareStatement.setBinaryStream(2, newLogOperazioniANSC.getFileStream());
-            prepareStatement.setString(3, newLogOperazioniANSC.getFileName());
+            String insertQuery = "Insert into \"LogOperazioniANSC\"(\"idOperazioneANSC\",\"idOperazioneComune\",\"idRiferimento\",\"codiceOperazioneANSC\",\"operatore\",\"data\",\"eseguita\",\"idAtto\",\"note\",\"idOperazioneAnnANSC\",\"idOperazioneAnnComune\",\"nome\",\"cognome\",\"attachment\",\"fileName\") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            // Statement.RETURN_GENERATED_KEYS permette di recuperare la chiave dopo aver eseguito la query
+            PreparedStatement prepareStatement = conn.prepareStatement(insertQuery,Statement.RETURN_GENERATED_KEYS);
+            prepareStatement.setLong(1,	newLogOperazioniANSC.getIdOperazioneANSC());
+            prepareStatement.setLong(2,	newLogOperazioniANSC.getIdOperazioneComune());
+            prepareStatement.setString(3,	newLogOperazioniANSC.getIdRiferimento());
+            prepareStatement.setString(4,	newLogOperazioniANSC.getCodiceOperazioneANSC());
+            prepareStatement.setString(5,	newLogOperazioniANSC.getOperatore());
+            prepareStatement.setDate(6,	new Date(newLogOperazioniANSC.getData().getTime()));
+            prepareStatement.setString(7,	newLogOperazioniANSC.getEseguita());
+            prepareStatement.setLong(8,	newLogOperazioniANSC.getIdAtto());
+            prepareStatement.setString(9,	newLogOperazioniANSC.getNote());
+            prepareStatement.setLong(10,	newLogOperazioniANSC.getIdOperazioneAnnANSC());
+            prepareStatement.setLong(11,	newLogOperazioniANSC.getIdOperazioneAnnComune());
+            prepareStatement.setString(12,	newLogOperazioniANSC.getNome());
+            prepareStatement.setString(13,	newLogOperazioniANSC.getCognome());
+            prepareStatement.setBinaryStream(14,newLogOperazioniANSC.getAttachment());
+            prepareStatement.setString(15,	newLogOperazioniANSC.getFileName());
+            // eseguo la query di insert
             prepareStatement.execute();
+            // recupero la chiave dell'oggetto dopo il suo inseritìmento in tabella
             ResultSet result = prepareStatement.getGeneratedKeys();
             if(result.next()) {
-                return result.getInt(1);
+                return result.getInt("idArchivio");
             }
         } catch (SQLException ex) {
             Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
     }
-    public void saveBlobFromInputStream(InputStream in, String name){
     
-        Connection conn = getConnection();
-        
-        try {
-            PreparedStatement prepareStatement = conn.prepareStatement("Insert into \"LogOperazioniANSC\"(\"attachment\", \"fileName\") VALUES(?, ?)");
-            
-            prepareStatement.setBinaryStream(1, in);
-            prepareStatement.setString(2, name);
-            prepareStatement.execute();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
-    }
-    
-    public LogOperazioniANSC getBlob(int idArchivio){
+    public LogOperazioniANSC getBlob(long idArchivio){
         Connection conn = getConnection();
         
         InputStream in;
         
         try {
-            
-            
             Statement createStatement = conn.createStatement();
             
             ResultSet executeQuery = createStatement.executeQuery("select \"fileName\", \"attachment\" FROM \"LogOperazioniANSC\" WHERE \"idArchivio\" = " + idArchivio);
             
             if(executeQuery.next()){
-            
                 in = executeQuery.getBinaryStream("attachment");
                 String fileName = executeQuery.getString("fileName");
                 
                 LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
-                logOperazioniANSC.setFileStream(in);
+                logOperazioniANSC.setAttachment(in);
                 logOperazioniANSC.setFileName(fileName);
-                return logOperazioniANSC;
-                
-                
+                return logOperazioniANSC; 
             }
-            
-            
         } catch (SQLException ex) {
             Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -148,14 +151,10 @@ public class LogOperazioniANSCRepository {
     
     
     private Connection getConnection() {
-        
         if (connection == null) {
-            
             connection = DBConnector.getConnection();
-            
         }
         return connection;
-        
     }
     
 }

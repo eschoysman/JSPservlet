@@ -10,6 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Arrays;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -29,6 +34,8 @@ public class InsertLogServlet extends HttpServlet {
 
     LogOperazioniANSCRepository logOperazioniANSCRepository = LogOperazioniANSCRepository.getLogOperazioniANSCRepository();
 
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -68,9 +75,9 @@ public class InsertLogServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        LogOperazioniANSC loansc = logOperazioniANSCRepository.getBlob( Integer.parseInt(request.getParameter("id")));
+        LogOperazioniANSC loansc = logOperazioniANSCRepository.getBlob( Long.parseLong(request.getParameter("id")));
 
-        InputStream blob = loansc.getFileStream();
+        InputStream blob = loansc.getAttachment();
         String fileName = loansc.getFileName();
 
         OutputStream outputStream = response.getOutputStream();
@@ -95,26 +102,45 @@ public class InsertLogServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Part part = request.getPart("file");
-        System.out.println(part);
-        request.getParameterMap().forEach((k,v)->System.out.println(k+" : "+Arrays.toString(v)));
-        String note = request.getParameter("note");
-        
-        LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
-        logOperazioniANSC.setNote(note);
-        if(!part.getSubmittedFileName().trim().isEmpty()) {
-            logOperazioniANSC.setFileName(part.getSubmittedFileName());
-            logOperazioniANSC.setFileStream(part.getInputStream());
-        }
+        try {
+    //        Part part = request.getPart("file");
+    //        System.out.println(part);
+            request.getParameterMap().forEach((k,v)->System.out.println(k+" : "+Arrays.toString(v)));
 
-        int idArchivio = logOperazioniANSCRepository.save(logOperazioniANSC);
-        System.out.println("idArchivio generato: "+idArchivio);
-        request.setAttribute("idArchivio", idArchivio);
-        getServletContext().getRequestDispatcher("/ricerca").forward(request,response);
-        
-        //processRequest(request, response);
+            LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
+            logOperazioniANSC.setIdOperazioneANSC(Long.parseLong(request.getParameter("idOperazioneANSC")));
+            logOperazioniANSC.setIdOperazioneComune(Long.parseLong(request.getParameter("idOperazioneComune")));
+            logOperazioniANSC.setIdRiferimento(request.getParameter("idRiferimento"));
+            logOperazioniANSC.setCodiceOperazioneANSC(request.getParameter("codiceOperazioneANSC"));
+            logOperazioniANSC.setNome(request.getParameter("nome"));
+            logOperazioniANSC.setCognome(request.getParameter("cognome"));
+            logOperazioniANSC.setEseguita(request.getParameter("eseguita"));
+            logOperazioniANSC.setNote(request.getParameter("note"));
+            logOperazioniANSC.setOperatore(request.getParameter("operatore"));
+            logOperazioniANSC.setData(DATE_FORMAT.parse(request.getParameter("data")));
+            logOperazioniANSC.setIdAtto(Long.parseLong(request.getParameter("idAtto")));
+            logOperazioniANSC.setIdOperazioneAnnANSC(Long.parseLong(request.getParameter("idOperazioneAnnANSC")));
+            logOperazioniANSC.setIdOperazioneAnnComune(Long.parseLong(request.getParameter("idOperazioneAnnComune")));
+            logOperazioniANSC.setFileName("attachment_"+Instant.now().getEpochSecond()+".pdf");
+            // TODO $$$ auto creazione del pdf tramite iText
+            createPDF(logOperazioniANSC);
+            logOperazioniANSC.setAttachment(null);
+
+            int idArchivio = logOperazioniANSCRepository.save(logOperazioniANSC);
+            System.out.println("idArchivio generato: "+idArchivio);
+            request.setAttribute("idArchivio", idArchivio);
+            getServletContext().getRequestDispatcher("/ricerca").forward(request,response);
+
+            //processRequest(request, response);
+        } catch(ParseException e) {
+            throw new ServletException(e);
+        }
     }
 
+    private void createPDF(LogOperazioniANSC logOperazioniANSC) {
+        
+    }
+    
     /**
      * Returns a short description of the servlet.
      *

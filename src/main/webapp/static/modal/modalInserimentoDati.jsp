@@ -5,26 +5,112 @@
         <form action="inserisci" method="POST" enctype="multipart/form-data">
             <table class="tavolo">
                 <tr>
-                    <th class="title" colspan="2">Inserisci dati</th>
+                    <th class="title" colspan="4">Inserisci dati</th>
                 </tr>
                 <tr>
-                    <th class="label">
+                    <td class="label">
                         idArchivio
-                    </th>
+                    </td>
                     <td>
-                        <input type="text" disabled/>
+                        <input name="idArchivio" type="text" disabled/>
+                    </td>
+                    <td class="label">
+                        idOperazioneANSC
+                    </td>
+                    <td>
+                        <input name="idOperazioneANSC" type="text" />
                     </td>
                 </tr>
                 <tr>
-                    <th class="label">idAtto</th>
-                    <td><input name="file" type="file"/></td>
+                    <td class="label">
+                        idOperazioneComune
+                    </td>
+                    <td>
+                        <input name="idOperazioneComune" type="text" />
+                    </td>
+                    <td class="label">
+                        idRiferimento
+                    </td>
+                    <td>
+                        <input name="idRiferimento" type="text" />
+                    </td>
                 </tr>
                 <tr>
-                    <th class="label">note</th>
-                    <td><input type="text" name="note"/></td>
+                    <td class="label">
+                        Codice operazione ANSC
+                    </td>
+                    <td colspan="3">
+                        <input name="codiceOperazioneANSC" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        Nome Cognome
+                    </td>
+                    <td colspan="3">
+                        <input name="nome" type="text" placeholder="Nome" />
+                        <input name="cognome" type="text" placeholder="Cognome" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        Eseguita
+                    </td>
+                    <td>
+                        <select name="eseguita">
+                            <option value="sì">Sì</option>
+                            <option value="no">No</option>
+                        </select>               
+                    </td>
+                    <td class="label" rowspan="2">
+                        Note
+                    </td>
+                    <td rowspan="2">
+                        <textarea name="note"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        Operatore
+                    </td>
+                    <td>
+                        <select name="operatore">
+                            <option value="entedev">entedev</option>
+                        </select>                
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        Data
+                    </td>
+                    <td>
+                        <input type="date" name="data" />
+                    </td>
+                    <td class="label">
+                        idAtto
+                    </td>
+                    <td>
+                        <input name="idAtto" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        Id Operazione Ann ANSC
+                    </td>
+                    <td>
+                        <input name="idOperazioneAnnANSC" type="text" />
+                    </td>
+                    <td class="label">
+                        id Operazione Ann Comune
+                    </td>
+                    <td>
+                        <input name="idOperazioneAnnComune" type="text" />
+                    </td>
                 </tr>
             </table>
-            <input type="submit"/>
+            <center>
+                <input type="submit"/>
+            </center>
         </form>
     </div>
 </div>

@@ -17,35 +17,18 @@ public class LogOperazioniANSC {
     private long idOperazioneANSC;
     private long idOperazioneComune;
     private String idRiferimento;
-    private String date;
-    private String time;
+    private String codiceOperazioneANSC;
+    private String operatore;
+    private Date data;
+    private String eseguita;
+    private long idAtto;
     private String note;
-    private InputStream fileStream;
+    private long idOperazioneAnnANSC;
+    private long idOperazioneAnnComune;
+    private String nome;
+    private String cognome;
+    private InputStream attachment;
     private String fileName;
-
-    public InputStream getFileStream() {
-        return fileStream;
-    }
-
-    public void setFileStream(InputStream fileStream) {
-        this.fileStream = fileStream;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
 
     public long getIdArchivio() {
         return idArchivio;
@@ -79,20 +62,100 @@ public class LogOperazioniANSC {
         this.idRiferimento = idRiferimento;
     }
 
-    public String getDate() {
-        return date;
+    public String getCodiceOperazioneANSC() {
+        return codiceOperazioneANSC;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setCodiceOperazioneANSC(String codiceOperazioneANSC) {
+        this.codiceOperazioneANSC = codiceOperazioneANSC;
     }
 
-    public String getTime() {
-        return time;
+    public String getOperatore() {
+        return operatore;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setOperatore(String operatore) {
+        this.operatore = operatore;
     }
-    
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public String getEseguita() {
+        return eseguita;
+    }
+
+    public void setEseguita(String eseguita) {
+        this.eseguita = eseguita;
+    }
+
+    public long getIdAtto() {
+        return idAtto;
+    }
+
+    public void setIdAtto(long idAtto) {
+        this.idAtto = idAtto;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public long getIdOperazioneAnnANSC() {
+        return idOperazioneAnnANSC;
+    }
+
+    public void setIdOperazioneAnnANSC(long idOperazioneAnnANSC) {
+        this.idOperazioneAnnANSC = idOperazioneAnnANSC;
+    }
+
+    public long getIdOperazioneAnnComune() {
+        return idOperazioneAnnComune;
+    }
+
+    public void setIdOperazioneAnnComune(long idOperazioneAnnComune) {
+        this.idOperazioneAnnComune = idOperazioneAnnComune;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+
+    public InputStream getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(InputStream attachment) {
+        this.attachment = attachment;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
 }

@@ -1,61 +1,50 @@
 
 .tavolo, th, td{
-    
-      border-collapse: collapse;
-
-    
+    border-collapse: collapse;
 }
 
 .tavolo{
     width: 90%;
-         border : black solid thin;
-
+    border : black solid thin;
     margin-left: auto;
     margin-right: auto;
-    
+    margin-bottom: 1em;
 }
 .tavolo tr{
-    
-
 }
 
 .tavolo th, .tavolo td{
-        border : black solid thin;
-        width: auto;
-            padding: 2px;
-
-        background-color: lightcyan;
+    border : black solid thin;
+    width: auto;
+    padding: 2px;
+    background-color: lightcyan;
 }
 
 .tavolo .label{
-            color: darkblue;
-            font-weight: bold;
-            background-color: lightgrey;
+    color: darkblue;
+    font-weight: bold;
+    background-color: lightgrey;
+    white-space: nowrap;
 
 }
 
 .tavolo .whitespace{
     height:20px;
 }
-.whitespace th{
-        background-color: lightskybluecyan;
 
-    
+.whitespace th{
+    background-color: lightskybluecyan;
 }
 
 .tavolo .title{
-    
-    background-color: blueviolet; 
-        color: white;
+    background-color: blueviolet;
+    color: white;
     text-align: center;
 }
 
 input[type="date"]{
-    
-    
     border: none;
     background-color: inherit;
-    
 }
 
 .navbar-title{
@@ -66,27 +55,21 @@ input[type="date"]{
     border-bottom: black solid 1.5px
 }
 .navbar{
-    
     height: 60px;
 }
 
 
 .navbar-items-bar{
-    
     height:25px;
 }
 .navbar-items{
     width:100%;
-    
 }
 .navbar-items, th{
-             
     border : black solid thin;
-    
     border-top: darkblue solid 3px;
     height:100%;
     border-collapse: collapse;
-    
 }
 .navbar-items th{
     text-align: left;
@@ -97,20 +80,20 @@ input[type="date"]{
 
 
 .dropdown {
-  position: relative;
-  display: inline-block;
-  width:100%;
+    position: relative;
+    display: inline-block;
+    width:100%;
 }
 
 .dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: lightcyan;
-  z-index: 1;
-  width:100%;
-  text-align: left;
-  margin-top: 2px;
-  border: black solid thin;
+    display: none;
+    position: absolute;
+    background-color: lightcyan;
+    z-index: 1;
+    width:100%;
+    text-align: left;
+    margin-top: 2px;
+    border: black solid thin;
 }
 .dropdown-content ul{
     margin-top: 4px;
@@ -119,17 +102,15 @@ input[type="date"]{
 }
 
 .dropdown:hover .dropdown-content {
-  display: block;
+    display: block;
 }
 
 .plus-icon{
-    
     position: absolute;
-    
+    cursor: pointer
 }
 
 .backdrop{
-    
     background-color: rgba(0,0,0,0.36   );
     position:fixed;
     width:100vw;
@@ -137,15 +118,13 @@ input[type="date"]{
     z-index: 2;
 }
 .modal{
-    
     background-color: white;
     z-index: 3;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-right: -50%;
-      transform: translate(-50%, -50%);
-      
-      padding:40px;
-      border-radius: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    padding:40px;
+    border-radius: 2px;
 }
