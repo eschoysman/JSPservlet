@@ -4,15 +4,13 @@
  */
 package it.advancia.servlets;
 
-import it.advancia.model.Anagrafica;
-import it.advancia.repository.AnagraficaRepository;
+import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
+import it.advancia.repository.LogOperazioniANSCRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.StringJoiner;
+import javax.json.Json;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +20,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lavoro
  */
-public class InsertAnagraficaServlet extends HttpServlet {
+public class IdRiferimentoServlet extends HttpServlet {
 
-    AnagraficaRepository anagraficaRepository = AnagraficaRepository.getAnagraficaRepository();
-    
+    LogOperazioniANSCRepository logOperazioniANSCRepository = LogOperazioniANSCRepository.getLogOperazioniANSCRepository();
+
+    public IdRiferimentoServlet() {
+    }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,22 +35,6 @@ public class InsertAnagraficaServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet InsertAnagraficaServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet InsertAnagraficaServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -64,9 +48,23 @@ public class InsertAnagraficaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        List<String> allDistinctIdRiferimento = logOperazioniANSCRepository.getAllDistinctIdRiferimento();
+        
+        response.setContentType("text/json");
+        
+        
+        response.getWriter().print(listToJson(allDistinctIdRiferimento));
     }
-
+    private String listToJson(List<String> allDistinctIdRiferimento){
+    
+        StringJoiner sj = new StringJoiner(", ");
+        
+        for(String s : allDistinctIdRiferimento){
+            sj.add("\""+ s +"\"");
+        }        
+        return "[" + sj.toString() + "]";
+    }
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -78,23 +76,6 @@ public class InsertAnagraficaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-        Map<String, String> collect = request.getParameterMap().entrySet().stream()
-                .collect(Collectors.toMap(entry -> entry.getKey() , entry ->entry.getValue()[0]));
-        
-        Anagrafica anagrafica = new Anagrafica();
-        anagrafica.setNome(collect.get("nome"));
-        
-        anagrafica.setCognome(collect.get("cognome"));
-        anagrafica.setDataNascita(collect.get("dataNascita"));
-        anagrafica.setLuogoNascita(collect.get("luogoNascita"));
-        anagrafica.setIdRiferimentoString(collect.get("idRiferimento"));
-        
-        if(anagraficaRepository.save(anagrafica))
-            response.getWriter().println("successful");
-        else
-        processRequest(request, response);
     }
 
     /**

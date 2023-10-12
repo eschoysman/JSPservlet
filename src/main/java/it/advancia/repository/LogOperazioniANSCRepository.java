@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.core.Response;
 import jdk.jfr.events.FileWriteEvent;
 
 /**
@@ -145,7 +146,26 @@ public class LogOperazioniANSCRepository {
         }
         return null;
     }
-    
+    public List<String> getAllDistinctIdRiferimento(){
+        
+        Connection conn = getConnection();
+        try {
+            
+            List<String> idRiferimentoList = new ArrayList<>();
+            Statement stm = conn.createStatement();
+            
+            ResultSet executeQuery = stm.executeQuery("select distinct(\"idRiferimento\") from \"LogOperazioniANSC\" WHERE \"idRiferimento\" IS NOT NULL AND \"idRiferimento\" NOT IN (select \"idRiferimento\" FROM \"Anagrafica\" WHERE \"idRiferimento\" IS NOT NULL ) ");
+            while(executeQuery.next()){
+                idRiferimentoList.add(executeQuery.getString(1));
+            }
+            return idRiferimentoList;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
     
     private Connection getConnection() {
         

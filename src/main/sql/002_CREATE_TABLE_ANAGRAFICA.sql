@@ -5,7 +5,7 @@
 -- Dumped from database version 16.0
 -- Dumped by pg_dump version 16.0
 
--- Started on 2023-10-12 12:37:43
+-- Started on 2023-10-12 13:00:52
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -55,7 +55,7 @@ CREATE SEQUENCE public."Anagrafica_id_seq"
 ALTER SEQUENCE public."Anagrafica_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4848 (class 0 OID 0)
+-- TOC entry 4850 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: Anagrafica_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -72,7 +72,7 @@ ALTER TABLE ONLY public."Anagrafica" ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 4842 (class 0 OID 32792)
+-- TOC entry 4844 (class 0 OID 32792)
 -- Dependencies: 220
 -- Data for Name: Anagrafica; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -83,7 +83,7 @@ COPY public."Anagrafica" (id, nome, cognome, "dataNascita", "luogoNascita", "idR
 
 
 --
--- TOC entry 4849 (class 0 OID 0)
+-- TOC entry 4851 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: Anagrafica_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -100,7 +100,16 @@ ALTER TABLE ONLY public."Anagrafica"
     ADD CONSTRAINT "Anagrafica_pkey" PRIMARY KEY (id);
 
 
--- Completed on 2023-10-12 12:37:43
+--
+-- TOC entry 4699 (class 2606 OID 32806)
+-- Name: Anagrafica idRiferimento_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Anagrafica"
+    ADD CONSTRAINT "idRiferimento_unique" UNIQUE ("idRiferimento");
+
+
+-- Completed on 2023-10-12 13:00:52
 
 --
 -- PostgreSQL database dump complete

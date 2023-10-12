@@ -28,6 +28,18 @@
                     <th class="label">Luogo di Nascita</th>
                     <td><input type="text" name="luogoNascita"/></td>
                 </tr>
+                                
+                <tr>
+                    <th class="label">IdRiferimento</th>
+                    <td><select id="idRiferimentoAnagrafica" name="idRiferimento"/>
+                    
+                        
+                    
+                    </td>
+                </tr>
+                
+                
+                <
                 
                 
             </table>
@@ -35,3 +47,26 @@
         </form>
     </div>
 </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+    
+
+</script>
+    
+<script>
+    function ciao(){
+    $.ajax("/idriferimenti").done(
+            function(res){
+            
+            var select = document.getElementById("idRiferimentoAnagrafica");
+            
+            res.forEach((item)=>{
+                
+                select.innerHTML += "<option value=" + item + ">"+ item +"</option>";    
+            });
+    })
+                
+        }
+ciao();
+</script>

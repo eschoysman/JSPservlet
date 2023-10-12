@@ -35,12 +35,12 @@ public class AnagraficaRepository {
     
         Connection conn = getConnection();
         try {
-            PreparedStatement stm = conn.prepareStatement("Insert INTO \"Anagrafica\" (\"nome\",\"cognome\",\"dataNascita\",\"luogoNascita\") VALUES(?,?,?,?)");
+            PreparedStatement stm = conn.prepareStatement("Insert INTO \"Anagrafica\" (\"nome\",\"cognome\",\"dataNascita\",\"luogoNascita\", \"idRiferimento\") VALUES(?,?,?,?,?)");
             stm.setString(1, anagrafica.getNome());
             stm.setString(2, anagrafica.getCognome());
             stm.setDate(3, java.sql.Date.valueOf(anagrafica.getDataNascita()));
             stm.setString(4, anagrafica.getLuogoNascita());
-            
+            stm.setString(5, anagrafica.getIdRiferimentoString());
             stm.execute();
         
         } catch (SQLException ex) {
