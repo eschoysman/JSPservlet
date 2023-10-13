@@ -7,12 +7,16 @@ package it.advancia.servlets;
 import it.advancia.model.Anagrafica;
 import it.advancia.model.LogOperazioniANSC;
 import it.advancia.repository.AnagraficaRepository;
+import it.advancia.repository.LogOperazioniANSCRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +30,7 @@ public class AnagraficaListServlet extends HttpServlet {
 
     
     private AnagraficaRepository anagraficaRepository = AnagraficaRepository.getAnagraficaRepository();
+    LogOperazioniANSCRepository logOperazioniANSCRepository = LogOperazioniANSCRepository.getLogOperazioniANSCRepository();
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -66,24 +71,12 @@ public class AnagraficaListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Map<Anagrafica, List<LogOperazioniANSC>> anagraficaConLog = new HashMap<>();
-        
-        Anagrafica a = new Anagrafica();
-        a.setId(0);
-        a.setNome("Emmanuel");
-        a.setCognome("rossi");
-        a.setDataNascita("2021/10/01");
-        a.setLuogoNascita("Bologna");
-        a.setIdRiferimento("CONS");
-        
-        LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
-        logOperazioniANSC.setIdArchivio(0);
-        anagraficaConLog.computeIfAbsent(a, anagrafica-> new ArrayList<>() ).add(logOperazioniANSC);
-        anagraficaConLog.computeIfAbsent(a, anagrafica-> new ArrayList<>() ).add(logOperazioniANSC);
-
         Map<Anagrafica, List<LogOperazioniANSC>> allAnagraficheWithLogOperazioniANSC = anagraficaRepository.getAllAnagraficheWithLogOperazioniANSC();
+        List<String> allIdRiferimento = logOperazioniANSCRepository.getAllIdRiferimento();
         
         request.setAttribute("anagraficheConLog", allAnagraficheWithLogOperazioniANSC);
+        request.setAttribute("idRiferimentoAll", allIdRiferimento);
+        
         getServletContext().getRequestDispatcher("/elencoAnagrafiche.jsp").forward(request, response);
     }
 
@@ -98,7 +91,31 @@ public class AnagraficaListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        Map<Long,String> idRiferimentoPerAnagrafica = new HashMap<>();
+        for(Map.Entry<String,String[]> entry : request.getParameterMap().entrySet()) {
+            Long newKey = Long.valueOf(entry.getKey().replace("idRiferimento_",""));
+            String newValue = entry.getValue()[0];
+            idRiferimentoPerAnagrafica.put(newKey,newValue);
+        }
+        
+        if(idRiferimentoPerAnagrafica.size()!=idRiferimentoPerAnagrafica.values().stream().distinct().count()) {
+            // due idRiferimento uguali
+            request.setAttribute("error", "Errore nel salvataggio dei idRiferimento: due o più anagrafiche hanno lo stesso valore");
+        }
+        else {
+            // ok, posso salvare
+            anagraficaRepository.update(idRiferimentoPerAnagrafica);
+            request.setAttribute("esito", "Salvataggio eseguito con successo");
+        }
+//        List<LogOperazioniANSC> executeQueryWhere = logOperazioniANSCRepository.executeQueryWhere(where.toString());
+        
+//        if(!executeQueryWhere.isEmpty()) {
+//            request.setAttribute("LogOperazioniANSC", executeQueryWhere);
+//        }
+//        response.sendRedirect("/anagrafiche");
+        
+        //processRequest(request, response);
     }
 
     /**
