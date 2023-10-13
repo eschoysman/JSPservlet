@@ -49,18 +49,22 @@ public class IdRiferimentoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        List<String> allDistinctIdRiferimento = logOperazioniANSCRepository.getAllDistinctIdRiferimento();
+        List<String> allIdRiferimento;
+        if(request.getParameter("all") == null) 
+            allIdRiferimento = logOperazioniANSCRepository.getAllDistinctIdRiferimento();
+        else 
+            allIdRiferimento = logOperazioniANSCRepository.getAllIdRiferimento();
         
         response.setContentType("text/json");
         
         
-        response.getWriter().print(listToJson(allDistinctIdRiferimento));
+        response.getWriter().print(listToJson(allIdRiferimento));
     }
-    private String listToJson(List<String> allDistinctIdRiferimento){
+    private String listToJson(List<String> allIdRiferimento){
     
         StringJoiner sj = new StringJoiner(", ");
         
-        for(String s : allDistinctIdRiferimento){
+        for(String s : allIdRiferimento){
             sj.add("\""+ s +"\"");
         }        
         return "[" + sj.toString() + "]";

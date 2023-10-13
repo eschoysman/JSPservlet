@@ -191,5 +191,24 @@ public class LogOperazioniANSCRepository {
         }
         return connection;
     }
+
+    public List<String> getAllIdRiferimento() {
+        Connection conn = getConnection();
+        try {
+            
+            List<String> idRiferimentoList = new ArrayList<>();
+            Statement stm = conn.createStatement();
+            
+            ResultSet executeQuery = stm.executeQuery("select distinct(\"idRiferimento\") from \"LogOperazioniANSC\" WHERE \"idRiferimento\" IS NOT NULL");
+            while(executeQuery.next()){
+                idRiferimentoList.add(executeQuery.getString(1));
+            }
+            return idRiferimentoList;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;    }
     
 }
