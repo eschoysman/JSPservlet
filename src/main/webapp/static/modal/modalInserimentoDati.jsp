@@ -32,7 +32,7 @@
                         idRiferimento
                     </td>
                     <td>
-                        <input name="idRiferimento" type="text" />
+                        <input name="idRiferimento" type="number" />
                     </td>
                 </tr>
                 <tr>
