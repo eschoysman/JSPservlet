@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +56,21 @@ public class AnagraficaRepository {
             return false;
         }
         
+        return true;
+    }
+    public boolean update(Map<Long,String> idRiferimentoPerAnagrafica) {
+        Connection conn = getConnection();
+        try {
+            for(Map.Entry<Long,String> entry : idRiferimentoPerAnagrafica.entrySet()) {
+                PreparedStatement stm = conn.prepareStatement("UPDATE \"Anagrafica\" SET \"idRiferimento\"=? WHERE \"id\"=?");
+                stm.setString(1, entry.getValue());
+                stm.setLong(2, entry.getKey());
+                stm.execute();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
         return true;
     }
     
