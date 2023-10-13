@@ -17,6 +17,10 @@ public class Anagrafica {
     private String luogoNascita;
     private String idRiferimentoString;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }
@@ -59,6 +63,28 @@ public class Anagrafica {
 
     public void setIdRiferimentoString(String idRiferimentoString) {
         this.idRiferimentoString = idRiferimentoString;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Anagrafica other = (Anagrafica) obj;
+        return this.id == other.id;
     }
     
     
