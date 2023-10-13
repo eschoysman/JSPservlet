@@ -15,7 +15,7 @@ public class Anagrafica {
     private String cognome;
     private String dataNascita;
     private String luogoNascita;
-    private String idRiferimentoString;
+    private String idRiferimento;
 
     public void setId(long id) {
         this.id = id;
@@ -57,12 +57,12 @@ public class Anagrafica {
         this.luogoNascita = luogoNascita;
     }
 
-    public String getIdRiferimentoString() {
-        return idRiferimentoString;
+    public String getIdRiferimento() {
+        return idRiferimento;
     }
 
-    public void setIdRiferimentoString(String idRiferimentoString) {
-        this.idRiferimentoString = idRiferimentoString;
+    public void setIdRiferimento(String idRiferimento) {
+        this.idRiferimento = idRiferimento;
     }
 
     @Override

@@ -89,7 +89,7 @@ public class InsertAnagraficaServlet extends HttpServlet {
         anagrafica.setCognome(collect.get("cognome"));
         anagrafica.setDataNascita(collect.get("dataNascita"));
         anagrafica.setLuogoNascita(collect.get("luogoNascita"));
-        anagrafica.setIdRiferimentoString(collect.get("idRiferimento"));
+        anagrafica.setIdRiferimento(collect.get("idRiferimento"));
         
         if(anagraficaRepository.save(anagrafica))
             response.getWriter().println("successful");

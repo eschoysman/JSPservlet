@@ -6,6 +6,7 @@ package it.advancia.servlets;
 
 import it.advancia.model.Anagrafica;
 import it.advancia.model.LogOperazioniANSC;
+import it.advancia.repository.AnagraficaRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -23,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AnagraficaListServlet extends HttpServlet {
 
+    
+    private AnagraficaRepository anagraficaRepository = AnagraficaRepository.getAnagraficaRepository();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -70,14 +74,16 @@ public class AnagraficaListServlet extends HttpServlet {
         a.setCognome("rossi");
         a.setDataNascita("2021/10/01");
         a.setLuogoNascita("Bologna");
-        a.setIdRiferimentoString("CONS");
+        a.setIdRiferimento("CONS");
         
         LogOperazioniANSC logOperazioniANSC = new LogOperazioniANSC();
         logOperazioniANSC.setIdArchivio(0);
         anagraficaConLog.computeIfAbsent(a, anagrafica-> new ArrayList<>() ).add(logOperazioniANSC);
         anagraficaConLog.computeIfAbsent(a, anagrafica-> new ArrayList<>() ).add(logOperazioniANSC);
 
-        request.setAttribute("anagraficheConLog", anagraficaConLog);
+        Map<Anagrafica, List<LogOperazioniANSC>> allAnagraficheWithLogOperazioniANSC = anagraficaRepository.getAllAnagraficheWithLogOperazioniANSC();
+        
+        request.setAttribute("anagraficheConLog", allAnagraficheWithLogOperazioniANSC);
         getServletContext().getRequestDispatcher("/elencoAnagrafiche.jsp").forward(request, response);
     }
 
