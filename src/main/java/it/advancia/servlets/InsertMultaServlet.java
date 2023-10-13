@@ -85,7 +85,9 @@ public class InsertMultaServlet extends HttpServlet {
         multa.setTipo(request.getParameter("tipo"));
         multa.setIdAnagrafica( Long.parseLong(request.getParameter("idAnagrafica")));
         
+        multaRepository.save(multa);
         
+        response.sendRedirect("inseriscimulta");
     }
 
     /**
