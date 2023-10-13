@@ -5,14 +5,12 @@
 package it.advancia.servlets;
 
 import it.advancia.model.Anagrafica;
+import it.advancia.model.Multa;
 import it.advancia.repository.AnagraficaRepository;
+import it.advancia.repository.MultaRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +20,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lavoro
  */
-public class InsertAnagraficaServlet extends HttpServlet {
+public class InsertMultaServlet extends HttpServlet {
 
-    AnagraficaRepository anagraficaRepository = AnagraficaRepository.getAnagraficaRepository();
-    
+    private AnagraficaRepository anagraficaRepository = AnagraficaRepository.getAnagraficaRepository();
+    private MultaRepository multaRepository = MultaRepository.getMultaRepository();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,10 +41,10 @@ public class InsertAnagraficaServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InsertAnagraficaServlet</title>");            
+            out.println("<title>Servlet InsertMultaServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet InsertAnagraficaServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet InsertMultaServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,7 +62,10 @@ public class InsertAnagraficaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        List<Anagrafica> allAnagrafica = anagraficaRepository.getAllAnagrafica();
+        request.setAttribute("anagrafiche", allAnagrafica);
+        request.getServletContext().getRequestDispatcher("/formMulta.jsp").forward(request, response);
     }
 
     /**
@@ -78,22 +79,15 @@ public class InsertAnagraficaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        Map<String, String> collect = request.getParameterMap().entrySet().stream()
-                .collect(Collectors.toMap(entry -> entry.getKey() , entry ->entry.getValue()[0]));
         
-        Anagrafica anagrafica = new Anagrafica();
-        anagrafica.setNome(collect.get("nome"));
+        Multa multa = new Multa();
+        multa.setImporto(Double.parseDouble(request.getParameter("importo")));
+        multa.setTipo(request.getParameter("tipo"));
+        multa.setIdAnagrafica( Long.parseLong(request.getParameter("idAnagrafica")));
         
-        anagrafica.setCognome(collect.get("cognome"));
-        anagrafica.setDataNascita(collect.get("dataNascita"));
-        anagrafica.setLuogoNascita(collect.get("luogoNascita"));
-        anagrafica.setIdRiferimento(collect.get("idRiferimento"));
+        multaRepository.save(multa);
         
-        if(anagraficaRepository.save(anagrafica))
-            response.getWriter().println("successful");
-        else
-        processRequest(request, response);
+        response.sendRedirect("inseriscimulta");
     }
 
     /**

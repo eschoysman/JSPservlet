@@ -18,7 +18,6 @@
     </head>
     <body>
         <%@include file="header/header.jsp"%>
-        <br>
         <table class="tavolo">
             <tr><th colspan="5">Elenco Log Operazioni ANSC</th></tr>
             <tr>

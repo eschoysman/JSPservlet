@@ -4,6 +4,8 @@
 }
 
 .tavolo{
+    
+    margin-top: 20px;
     width: 90%;
     border : black solid thin;
     margin-left: auto;

@@ -5,10 +5,18 @@
 package it.advancia.repository;
 
 import it.advancia.model.Anagrafica;
+import it.advancia.model.LogOperazioniANSC;
 import it.advancia.utility.DBConnector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +48,7 @@ public class AnagraficaRepository {
             stm.setString(2, anagrafica.getCognome());
             stm.setDate(3, java.sql.Date.valueOf(anagrafica.getDataNascita()));
             stm.setString(4, anagrafica.getLuogoNascita());
-            stm.setString(5, anagrafica.getIdRiferimentoString());
+            stm.setString(5, anagrafica.getIdRiferimento());
             stm.execute();
         
         } catch (SQLException ex) {
@@ -49,6 +57,83 @@ public class AnagraficaRepository {
         }
         
         return true;
+    }
+    public boolean update(Map<Long,String> idRiferimentoPerAnagrafica) {
+        Connection conn = getConnection();
+        try {
+            for(Map.Entry<Long,String> entry : idRiferimentoPerAnagrafica.entrySet()) {
+                PreparedStatement stm = conn.prepareStatement("UPDATE \"Anagrafica\" SET \"idRiferimento\"=? WHERE \"id\"=?");
+                stm.setString(1, entry.getValue());
+                stm.setLong(2, entry.getKey());
+                stm.execute();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    
+    public Map<Anagrafica, List<LogOperazioniANSC>> getAllAnagraficheWithLogOperazioniANSC(){
+    
+        Map<Anagrafica, List<LogOperazioniANSC>> anagraficaConLog = new HashMap<>();
+    
+                Connection conn = getConnection();
+        try {
+            
+            Statement stm = conn.createStatement();
+            String sql = "select \"id\", \"Anagrafica\".\"nome\" as \"nome\", \"Anagrafica\".\"cognome\" as \"cognome\", \"dataNascita\",  \"luogoNascita\", \"Anagrafica\".\"idRiferimento\" as \"idRiferimento\", \"idArchivio\"  from \"Anagrafica\" LEFT JOIN \"LogOperazioniANSC\" ON \"Anagrafica\".\"idRiferimento\" = \"LogOperazioniANSC\".\"idRiferimento\" WHERE \"Anagrafica\".\"idRiferimento\" IS NOT NULL";
+
+            ResultSet executeQuery = stm.executeQuery(sql);
+            
+            while(executeQuery.next()){
+                
+                Anagrafica anagrafica = new Anagrafica();
+                anagrafica.setId(executeQuery.getLong("id"));
+                anagrafica.setNome(executeQuery.getString("nome"));
+                anagrafica.setCognome(executeQuery.getString("cognome"));
+                anagrafica.setLuogoNascita(executeQuery.getString("luogoNascita"));
+                anagrafica.setDataNascita(executeQuery.getDate("dataNascita").toString());
+                anagrafica.setIdRiferimento(executeQuery.getString("idRiferimento"));
+                
+                LogOperazioniANSC loansc = new LogOperazioniANSC();
+                loansc.setIdArchivio(executeQuery.getLong("idArchivio"));
+                
+                anagraficaConLog.computeIfAbsent(anagrafica, key -> new ArrayList<>() ).add(loansc);
+            }
+            return anagraficaConLog;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LogOperazioniANSCRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+        
+    
+    }
+    public List<Anagrafica> getAllAnagrafica(){
+    
+        List<Anagrafica> anagraficaList = new ArrayList<>();
+        Connection conn = getConnection();
+        try {
+            
+            Statement stm = conn.createStatement();
+            String sql = "select \"id\", \"nome\", \"cognome\"  from \"Anagrafica\"";
+            ResultSet executeQuery = stm.executeQuery(sql);
+            
+            while(executeQuery.next()){
+                Anagrafica anagrafica = new Anagrafica();
+                anagrafica.setId(executeQuery.getLong("id"));
+                anagrafica.setNome(executeQuery.getString("nome"));
+                anagrafica.setCognome(executeQuery.getString("cognome"));
+                
+                anagraficaList.add(anagrafica);
+            }
+        
+    
+            }catch(Exception e){e.printStackTrace();}
+                
+        return anagraficaList;
     }
     
     

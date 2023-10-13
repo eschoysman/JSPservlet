@@ -10,12 +10,21 @@ package it.advancia.model;
  */
 public class Anagrafica {
     
+    private long id;
     private String nome;
     private String cognome;
     private String dataNascita;
     private String luogoNascita;
-    private String idRiferimentoString;
+    private String idRiferimento;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+    
     public String getNome() {
         return nome;
     }
@@ -48,12 +57,34 @@ public class Anagrafica {
         this.luogoNascita = luogoNascita;
     }
 
-    public String getIdRiferimentoString() {
-        return idRiferimentoString;
+    public String getIdRiferimento() {
+        return idRiferimento;
     }
 
-    public void setIdRiferimentoString(String idRiferimentoString) {
-        this.idRiferimentoString = idRiferimentoString;
+    public void setIdRiferimento(String idRiferimento) {
+        this.idRiferimento = idRiferimento;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Anagrafica other = (Anagrafica) obj;
+        return this.id == other.id;
     }
     
     

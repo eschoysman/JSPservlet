@@ -5,15 +5,15 @@
 package it.advancia.servlets;
 
 import it.advancia.model.Anagrafica;
+import it.advancia.model.Multa;
 import it.advancia.repository.AnagraficaRepository;
+import it.advancia.repository.MultaRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.AbstractMap;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,9 +22,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lavoro
  */
-public class InsertAnagraficaServlet extends HttpServlet {
+@WebServlet(name = "SearchServlet", urlPatterns = {"/ricercaMulte"})
+public class RicercaMulteServlet extends HttpServlet {
 
-    AnagraficaRepository anagraficaRepository = AnagraficaRepository.getAnagraficaRepository();
+    private AnagraficaRepository anagraficaRepository = AnagraficaRepository.getAnagraficaRepository();
+    private MultaRepository multaRepository = MultaRepository.getMultaRepository();
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,16 +39,32 @@ public class InsertAnagraficaServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
+        if(request.getAttribute("LogOperazioniANSC")!= null){
+        
+        getServletContext().getRequestDispatcher("/risultatiRicerca.jsp").forward(request, response);
+        
+        }
+        
+        
+        
+        
+        
+        
         response.setContentType("text/html;charset=UTF-8");
+        
+        
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InsertAnagraficaServlet</title>");            
+            out.println("<title>Servlet SearchServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet InsertAnagraficaServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SearchServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,7 +82,21 @@ public class InsertAnagraficaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        String idAnagraficaString = request.getParameter("idUtente");
+        if(idAnagraficaString!=null && !idAnagraficaString.trim().isEmpty()) {
+            Long idAnagrafica = Long.valueOf(idAnagraficaString);
+            List<Multa> multe = multaRepository.recuperaPerAnagrafica(idAnagrafica);
+            double totaleMulte = multaRepository.getTotaleMultePerAnagrafica(idAnagrafica);
+            request.setAttribute("listaMulte", multe);
+            request.setAttribute("totaleMulte", totaleMulte);
+            request.getServletContext().getRequestDispatcher("/elencoMulte.jsp").forward(request, response);
+        }
+        else {
+            List<Anagrafica> allAnagrafica = anagraficaRepository.getAllAnagrafica();
+            request.setAttribute("anagrafiche", allAnagrafica);
+            request.getServletContext().getRequestDispatcher("/ricercaMulte.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -78,21 +110,6 @@ public class InsertAnagraficaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        Map<String, String> collect = request.getParameterMap().entrySet().stream()
-                .collect(Collectors.toMap(entry -> entry.getKey() , entry ->entry.getValue()[0]));
-        
-        Anagrafica anagrafica = new Anagrafica();
-        anagrafica.setNome(collect.get("nome"));
-        
-        anagrafica.setCognome(collect.get("cognome"));
-        anagrafica.setDataNascita(collect.get("dataNascita"));
-        anagrafica.setLuogoNascita(collect.get("luogoNascita"));
-        anagrafica.setIdRiferimento(collect.get("idRiferimento"));
-        
-        if(anagraficaRepository.save(anagrafica))
-            response.getWriter().println("successful");
-        else
         processRequest(request, response);
     }
 
