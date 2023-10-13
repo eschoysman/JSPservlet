@@ -11,4 +11,41 @@ package it.advancia.model;
  */
 public class Multa {
     
+    private long id;
+    private String tipo;
+    private double importo;
+    private long idAnagrafica;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public double getImporto() {
+        return importo;
+    }
+
+    public void setImporto(double importo) {
+        this.importo = importo;
+    }
+
+    public long getIdAnagrafica() {
+        return idAnagrafica;
+    }
+
+    public void setIdAnagrafica(long idAnagrafica) {
+        this.idAnagrafica = idAnagrafica;
+    }
+    
 }

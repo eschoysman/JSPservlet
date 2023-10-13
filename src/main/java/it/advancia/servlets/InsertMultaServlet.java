@@ -5,7 +5,9 @@
 package it.advancia.servlets;
 
 import it.advancia.model.Anagrafica;
+import it.advancia.model.Multa;
 import it.advancia.repository.AnagraficaRepository;
+import it.advancia.repository.MultaRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -21,8 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 public class InsertMultaServlet extends HttpServlet {
 
     private AnagraficaRepository anagraficaRepository = AnagraficaRepository.getAnagraficaRepository();
-
-    
+    private MultaRepository multaRepository = MultaRepository.getMultaRepository();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -78,6 +79,11 @@ public class InsertMultaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Multa multa = new Multa();
+        multa.setImporto(Double.parseDouble(request.getParameter("importo")));
+        multa.setTipo(request.getParameter("tipo"));
+        multa.setIdAnagrafica( Long.parseLong(request.getParameter("idAnagrafica")));
         
         
     }
