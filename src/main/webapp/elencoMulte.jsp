@@ -17,13 +17,21 @@
         <%@include file="header/header.jsp"%>
         <table class="tavolo">
             <tr>
+                <th colspan="2">Totale: ${requestScope.totaleMulte} €</th>
+            </tr>
+            <tr>
                 <th class="label">tipo</th>
                 <th class="label">importo</th>
             </tr>
+            <c:if test="${requestScope.listaMulte==null || requestScope.listaMulte.isEmpty()}">
+                <tr>
+                    <td colspan="2">Nessuna multa presente</td>
+                </tr>
+            </c:if>
             <c:forEach items="${requestScope.listaMulte}" var="multa">
             <tr>
                 <td>${multa.getTipo()}</td>
-                <td>${multa.getImporto()}</td>
+                <td>${multa.getImporto()} €</td>
             </tr>            
             </c:forEach>
 

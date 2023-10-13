@@ -67,6 +67,28 @@ public class MultaRepository {
         }
         return null;
     }
+    
+    public double getTotaleMultePerAnagrafica(long idAnagrafica) {
+        Connection conn = getConnection();
+        try { 
+            PreparedStatement prepareStatement = conn.prepareStatement("SELECT COALESCE(SUM(\"importo\")) as totaleMulte FROM \"Multa\" WHERE \"idAnagrafica\"=?");
+            prepareStatement.setLong(1, idAnagrafica);
+            prepareStatement.execute();
+            ResultSet resultSet = prepareStatement.executeQuery();
+            
+            List<Multa> multe = new ArrayList<>();
+            double totaleMulte = 0;
+            
+            while(resultSet.next()) {
+                totaleMulte = resultSet.getDouble("totaleMulte");
+            }
+            return totaleMulte;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
     private Multa convertToMulta(ResultSet resultSet) throws SQLException {
         Multa multa = new Multa();
         multa.setId(resultSet.getLong("id"));

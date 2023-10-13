@@ -87,10 +87,10 @@ public class RicercaMulteServlet extends HttpServlet {
         if(idAnagraficaString!=null && !idAnagraficaString.trim().isEmpty()) {
             Long idAnagrafica = Long.valueOf(idAnagraficaString);
             List<Multa> multe = multaRepository.recuperaPerAnagrafica(idAnagrafica);
-            if(!multe.isEmpty()) {
-                request.setAttribute("listaMulte", multe);
-                request.getServletContext().getRequestDispatcher("/elencoMulte.jsp").forward(request, response);
-            }
+            double totaleMulte = multaRepository.getTotaleMultePerAnagrafica(idAnagrafica);
+            request.setAttribute("listaMulte", multe);
+            request.setAttribute("totaleMulte", totaleMulte);
+            request.getServletContext().getRequestDispatcher("/elencoMulte.jsp").forward(request, response);
         }
         else {
             List<Anagrafica> allAnagrafica = anagraficaRepository.getAllAnagrafica();
