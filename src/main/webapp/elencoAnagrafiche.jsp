@@ -18,7 +18,6 @@
     </head>
     <body>
         <%@include file="header/header.jsp"%>
-        <br>
         <form action="/anagrafiche" method="POST">
             <table class="tavolo">
                 <tr><th colspan="6">Elenco Anagrafiche</th></tr>

@@ -12,33 +12,46 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" type="text/css" href="static/style.css" />
     </head>
     <body>
-        <h1>Hello World!</h1>
-        
-        
-        <form action="inseriscimulta" method="POST">
-            
-            <select name="idAnagrafica">
-                <c:forEach items="${requestScope.anagrafiche}" var="anagrafica" >
-                    
-                    <option value="${anagrafica.getId()}">${anagrafica.getNome()} ${anagrafica.getCognome()}</option>
-                    
-                </c:forEach>
-            </select>
-            
-            <select name="tipo">
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                
-            </select>
+        <%@include file="header/header.jsp"%>
 
-            <input name="importo" text="number"/>
-            
-            
-            <input type="submit"/>
+        <form action="inseriscimulta" method="POST">
+            <table class="tavolo">
+                <tr>
+                    <th class="label">Utente</th>
+
+                    <td>
+                        <select name="idAnagrafica">
+                            <c:forEach items="${requestScope.anagrafiche}" var="anagrafica" >
+
+                                <option value="${anagrafica.getId()}">${anagrafica.getNome()} ${anagrafica.getCognome()}</option>
+
+                            </c:forEach>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="label">tipo</th>
+                    <td>
+                <select name="tipo">
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </select>
+                        </td>
+</tr>
+<tr>
+    <th class="label">importo</th>
+    <td>
+                <input name="importo" text="number"/>
+</td>
+</tr>
+<tr><th colspan="2"> <input type="submit"/></th></tr>
+            </table>
         </form>
-        
+
     </body>
 </html>
