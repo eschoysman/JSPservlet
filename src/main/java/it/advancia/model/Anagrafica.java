@@ -10,12 +10,17 @@ package it.advancia.model;
  */
 public class Anagrafica {
     
+    private long id;
     private String nome;
     private String cognome;
     private String dataNascita;
     private String luogoNascita;
     private String idRiferimentoString;
 
+    public long getId() {
+        return id;
+    }
+    
     public String getNome() {
         return nome;
     }
