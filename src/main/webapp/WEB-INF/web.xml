@@ -24,6 +24,10 @@
         <servlet-name>AnagraficaListServlet</servlet-name>
         <servlet-class>it.advancia.servlets.AnagraficaListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InsertMultaServlet</servlet-name>
+        <servlet-class>it.advancia.servlets.InsertMultaServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SimpleServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>AnagraficaListServlet</servlet-name>
         <url-pattern>/anagrafiche</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertMultaServlet</servlet-name>
+        <url-pattern>/inseriscimulta</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

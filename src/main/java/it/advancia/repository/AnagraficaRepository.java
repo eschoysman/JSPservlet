@@ -95,6 +95,30 @@ public class AnagraficaRepository {
         
     
     }
+    public List<Anagrafica> getAllAnagrafica(){
+    
+        List<Anagrafica> anagraficaList = new ArrayList<>();
+        Connection conn = getConnection();
+        try {
+            
+            Statement stm = conn.createStatement();
+            String sql = "select \"id\", \"nome\", \"cognome\"  from \"Anagrafica\"";
+            ResultSet executeQuery = stm.executeQuery(sql);
+            
+            while(executeQuery.next()){
+                Anagrafica anagrafica = new Anagrafica();
+                anagrafica.setId(executeQuery.getLong("id"));
+                anagrafica.setNome(executeQuery.getString("nome"));
+                anagrafica.setCognome(executeQuery.getString("cognome"));
+                
+                anagraficaList.add(anagrafica);
+            }
+        
+    
+            }catch(Exception e){e.printStackTrace();}
+                
+        return anagraficaList;
+    }
     
     
     private Connection getConnection(){
