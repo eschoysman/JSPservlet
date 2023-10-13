@@ -49,8 +49,8 @@
                     <td>${anag.getKey().getLuogoNascita()}</td>
                     <td>${anag.getKey().getIdRiferimentoString()}</td>
                     <td>
-                        <c:forEach items="anag.getValue()" var="logOperazioneANSC">
-                            logOperazioneANSC.getIdArchivio()
+                        <c:forEach items="${anag.getValue()}" var="logOperazioneANSC">
+                            ${logOperazioneANSC.getIdArchivio()}
                         </c:forEach>
                     </td>
                 </tr>
